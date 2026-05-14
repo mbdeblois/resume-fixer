@@ -792,7 +792,7 @@ async function analyzeResume(){
   const resumeText_short=text.slice(0,4000);
 
   // CALL 1 — Feedback, fixes, overall (smaller JSON)
-  const prompt1=`You are a brutally honest resume coach for Filipino VAs. Speak in Taglish. Analyze this resume and return ONLY valid JSON — no markdown, no backticks.
+  const prompt1=`You are a world-class resume coach who has reviewed thousands of resumes for Filipino VAs, freelancers, and job hunters. You give feedback like a real mentor who READ EVERY LINE — not generic advice, but line-by-line, word-by-word analysis. You speak in Taglish.
 
 ${jobCtx}
 
@@ -801,24 +801,40 @@ Resume:
 ${resumeText_short}
 """
 
-Return ONLY this JSON:
+Your job: Give feedback so specific and personal that the person feels like you read their resume 3 times. Quote their ACTUAL words. Explain exactly why each word or phrase hurts them. Give word-for-word replacement examples.
+
+Return ONLY this exact JSON — no markdown, no backticks:
 {
-  "overall_feedback": "3-4 Taglish sentences. Cover the whole resume. Start with: Ito yung mga nakakasakit sa resume mo —",
+  "overall_feedback": "4-5 Taglish sentences. Quote at least 2 specific lines directly from their resume and explain why those exact lines are weak. Sound like: 'Nakita ko yung line mo na [QUOTE] — ito yung problema nito...' Cover the whole resume, not just one section.",
   "fixes": [
-    {"number":1,"title":"FIX TITLE IN CAPS","problem":"Taglish — specific problem at psychological effect nito. Name exact words.","fix":"Exact fix with example wording"},
-    {"number":2,"title":"FIX TITLE IN CAPS","problem":"Taglish — ano ang mali at bakit nakakasakit","fix":"Specific fix with example"},
-    {"number":3,"title":"FIX TITLE IN CAPS","problem":"Taglish — ano ang mali at bakit","fix":"Specific fix with example"}
+    {
+      "number": 1,
+      "title": "SPECIFIC FIX TITLE BASED ON ACTUAL CONTENT — e.g. ALISIN ANG PASSIVE LANGUAGE SA LAHAT NG BULLETS",
+      "problem": "Quote their actual weak line/phrase. Then explain: bakit nakakasakit ito sa perception ng hiring manager o client. Be psychological — ano ang naiisip ng reader? 2-3 Taglish sentences.",
+      "fix": "Give them the EXACT replacement wording. Word for word. Hindi lang 'improve your bullets' — ibigay mo na yung actual sentence na dapat gamitin nila."
+    },
+    {
+      "number": 2,
+      "title": "SECOND SPECIFIC FIX — based on actual problem found",
+      "problem": "Quote their actual words again. Explain the specific psychological damage. Why will a client or hiring manager skip this person?",
+      "fix": "Exact replacement wording — copy-paste ready"
+    },
+    {
+      "number": 3,
+      "title": "THIRD SPECIFIC FIX — could be about positioning, ATS, or missing info",
+      "problem": "Specific to what you actually found. Quote it. Explain it. Make them feel seen.",
+      "fix": "Exact fix — specific words, specific example, ready to use"
+    }
   ],
-  "headline_feedback": "Taglish — ano ang mali sa headline. Name exact weak words.",
-  "headline_rewrite": "Strong rewritten headline for their target role",
-  "summary_feedback": "Taglish — task-based? Walang outcomes? Name specific phrases.",
-  "summary_rewrite": "3-4 sentence punchy outcome-focused summary"
+  "headline_feedback": "Quote their exact headline. Tell them word by word what is weak about it and WHY in Taglish. What does a hiring manager think when they read it? Be specific.",
+  "headline_rewrite": "Rewritten headline — specific, keyword-rich, ATS-friendly, targeted to their role",
+  "summary_feedback": "Quote at least one specific phrase from their summary. Is it task-based? Vague? Missing outcomes? Tell them exactly which sentence is killing their chances and why.",
+  "summary_rewrite": "Rewritten summary — 3-4 sentences, outcome-focused, positions them as a solution not just a candidate. Should start with their biggest value, not their job title."
 }
 
-JSON only.`;
+Be the coach they needed but never had. JSON only.`;
 
-  // CALL 2 — Bullet rewrites only (separate call)
-  const prompt2=`You are an expert resume writer. Rewrite bullets from ALL job experiences in this resume. Return ONLY valid JSON — no markdown, no backticks.
+  const prompt2=`You are an expert resume writer specializing in ATS-optimized, results-driven bullet points. Rewrite bullets from EVERY job in this resume — not just the first one. Cover all roles.
 
 ${jobCtx}
 
@@ -827,13 +843,27 @@ Resume:
 ${resumeText_short}
 """
 
-Return ONLY this JSON:
+Rules for rewrites:
+1. Start with a STRONG action verb (Led, Drove, Reduced, Increased, Built, Streamlined, etc.)
+2. Add METRICS wherever possible — even estimates are okay (increased by ~30%, managed 10+ clients)
+3. Show OUTCOMES not just tasks — what happened BECAUSE of their work?
+4. Make it ATS-friendly — include relevant keywords for their role
+5. Cover bullets from MULTIPLE jobs — spread across their work history
+
+Return ONLY this JSON — no markdown, no backticks:
 {
-  "bullets_feedback": "1-2 Taglish sentences — pattern ng weakness sa lahat ng bullets. Name specific weak examples.",
-  "rewrites": ["strong bullet 1","strong bullet 2","strong bullet 3","strong bullet 4","strong bullet 5","strong bullet 6"]
+  "bullets_feedback": "2-3 Taglish sentences. Quote 2 specific weak bullets from their resume and explain exactly why they are weak. E.g. 'Yung line mo na [QUOTE] — walang resulta. Anong nangyari? Gaano ka-improve? Ganito dapat...'",
+  "rewrites": [
+    "Strong rewritten bullet from job 1 — with metric and outcome",
+    "Strong rewritten bullet from job 1 — different angle",
+    "Strong rewritten bullet from job 2 — with metric and outcome",
+    "Strong rewritten bullet from job 2 — different angle",
+    "Strong rewritten bullet from job 3 — with metric and outcome",
+    "Strong rewritten bullet from job 3 — different angle"
+  ]
 }
 
-Rules: Start each bullet with a strong action verb. Include metrics where possible. Cover different jobs. JSON only.`;
+JSON only.`;`
 
   try{
     clearInterval(tInt);
@@ -868,7 +898,10 @@ Rules: Start each bullet with a strong action verb. Include metrics where possib
 }
 
 function populateResults(r){
-  document.getElementById('overall-fb').innerHTML=`<strong>🎯 Overall na feedback:</strong> ${r.overall_feedback||''}`;
+  document.getElementById('overall-fb').innerHTML=`
+  <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#60a5fa;margin-bottom:8px">🎯 OVERALL NA FEEDBACK</div>
+  <div style="font-size:14px;line-height:1.8">${r.overall_feedback||''}</div>
+`;
 
   // Render per-job feedback
   const jobsEl=document.getElementById('jobs-container');
@@ -888,7 +921,14 @@ function populateResults(r){
     fixesEl.innerHTML='';
     r.fixes.forEach(f=>{
       const card=document.createElement('div');card.className='fix-card';
-      card.innerHTML=`<div class="fix-number">⚠️ FIX #${f.number}</div><div class="fix-title">${f.title}</div><div class="fix-problem">${f.problem}</div><div class="fix-solution">✅ <strong>Gawin ito:</strong> ${f.fix}</div>`;
+      card.innerHTML=`
+        <div class="fix-number">⚠️ FIX #${f.number}</div>
+        <div class="fix-title">${f.title}</div>
+        <div class="fix-problem">${f.problem}</div>
+        <div class="fix-solution">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:#4ade80;margin-bottom:4px">✅ GAWIN ITO:</div>
+          ${f.fix}
+        </div>`;
       fixesEl.appendChild(card);
     });
     document.getElementById('fixes-section').style.display='block';
@@ -898,7 +938,10 @@ function populateResults(r){
   document.getElementById('ed-headline').value=r.headline?.rewrite||'';
   if(r.summary?.feedback){document.getElementById('sfb').textContent=r.summary.feedback;document.getElementById('scard').style.display='block'}
   document.getElementById('ed-summary').value=r.summary?.rewrite||'';
-  if(r.bullets?.feedback){document.getElementById('bfb').textContent=r.bullets.feedback;document.getElementById('bcard').style.display='block'}
+  if(r.bullets?.feedback){
+  document.getElementById('bfb').innerHTML=`<span style="color:#fbbf24;font-weight:600">Nakita ko ito sa bullets mo:</span><br>${r.bullets.feedback}`;
+  document.getElementById('bcard').style.display='block';
+}
   document.getElementById('bullets-editor').innerHTML='';
   (r.bullets?.rewrites||[]).forEach(b=>addBullet(b));
 }
