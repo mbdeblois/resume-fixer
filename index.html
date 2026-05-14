@@ -689,7 +689,14 @@ function checkPassword(){
   const val=document.getElementById('pw-input').value.trim();
   const err=document.getElementById('pw-err');
   if(val==='mary99'){
-    document.getElementById('page-password').style.display='none';
+    const pw=document.getElementById('page-password');
+    pw.style.display='none';
+    pw.style.position='';
+    pw.style.top='';
+    pw.style.left='';
+    pw.style.width='';
+    pw.style.height='';
+    pw.style.zIndex='';
     document.getElementById('page-landing').classList.remove('active');
     document.getElementById('page-tool').classList.add('active');
     err.style.display='none';
@@ -728,7 +735,19 @@ function toggleAtsGuide(el){
   if(icon)icon.style.transform=body.classList.contains('open')?'rotate(180deg)':'';
 }
 function toggleFaq(el){el.nextElementSibling.classList.toggle('open')}
-function goToTool(){document.getElementById('page-landing').classList.remove('active');document.getElementById('page-password').style.display='flex';window.scrollTo(0,0)}
+function goToTool(){
+  document.getElementById('page-landing').classList.remove('active');
+  const pw=document.getElementById('page-password');
+  pw.style.display='flex';
+  pw.style.position='fixed';
+  pw.style.top='0';
+  pw.style.left='0';
+  pw.style.width='100%';
+  pw.style.height='100%';
+  pw.style.zIndex='999';
+  window.scrollTo(0,0);
+  setTimeout(()=>document.getElementById('pw-input').focus(),300);
+}
 function goBack(){document.getElementById('page-tool').classList.remove('active');document.getElementById('page-landing').classList.add('active');window.scrollTo(0,0);}
 function backToEdit(){document.getElementById('s-review').style.display='none';document.getElementById('s-results').style.display='block';setStep(3)}
 function switchTab(t){
