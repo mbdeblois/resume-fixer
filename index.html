@@ -705,12 +705,20 @@ let resumeText='',currentTab='upload',originalAIOutput={};
 if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
 async function callGemini(prompt){
-  const resp=await fetch(GROQ_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],temperature:0.7,max_tokens:1200})});
+  const resp=await fetch(GROQ_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],temperature:0.7,max_tokens:2500})});
   const data=await resp.json();
   if(data.error)throw new Error('Groq: '+data.error.message);
   const text=data.choices?.[0]?.message?.content||'';
   if(!text)throw new Error('Empty response from Groq');
-  return text.replace(/```json|```/g,'').trim();
+  let clean=text.replace(/```json|```/g,'').trim();
+  // Fix truncated JSON — find last complete closing brace
+  const lastBrace=clean.lastIndexOf('}');
+  if(lastBrace!==-1 && lastBrace<clean.length-1)clean=clean.slice(0,lastBrace+1);
+  // Close any unclosed arrays/objects
+  let open=0,close=0;
+  for(const c of clean){if(c==='{')open++;if(c==='}')close++;}
+  while(close<open){clean+='}';close++;}
+  return clean;
 }
 
 function toggleAtsGuide(el){
