@@ -170,6 +170,33 @@
   .ats-guide-body.open{display:block}
   .ats-sample{background:var(--bg3);border-radius:var(--radius);padding:1rem;font-size:12px;font-family:monospace;color:var(--text2);line-height:1.8;white-space:pre-wrap;border:0.5px solid var(--border)}
   .ats-tip{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px;padding:8px 12px;background:var(--bg3);border-radius:var(--radius);border-left:2px solid var(--amber)}
+  /* VISUAL DESIGN ADDITIONS */
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:#ffffff0f;border:0.5px solid #ffffff1a;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:1rem;letter-spacing:.3px}
+  .hero-badge span{color:#4ade80;font-size:8px}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1.5rem 0}
+  .stat-box{background:#ffffff08;border:0.5px solid #ffffff12;border-radius:var(--radius);padding:1rem;text-align:center}
+  .stat-num{font-size:24px;font-weight:700;color:#fff;line-height:1}
+  .stat-label{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.3}
+  .section-icon{font-size:20px;margin-bottom:8px;display:block}
+  .get-item i{font-size:18px}
+  .feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
+  .feature-card{background:#ffffff06;border:0.5px solid #ffffff10;border-radius:var(--radius-lg);padding:1rem;transition:border .2s}
+  .feature-card:hover{border-color:#ffffff25}
+  .feature-card-icon{font-size:22px;margin-bottom:8px;display:block}
+  .feature-card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+  .feature-card-desc{font-size:12px;color:var(--text3);line-height:1.5}
+  .divider-label{display:flex;align-items:center;gap:12px;margin:1.5rem 0}
+  .divider-label span{font-size:11px;color:var(--text3);white-space:nowrap;letter-spacing:1px;text-transform:uppercase}
+  .divider-label::before,.divider-label::after{content:"";flex:1;height:0.5px;background:var(--border)}
+  .avatar{background:linear-gradient(135deg,#333,#1a1a1a)}
+  .hero{padding:2.5rem 0 1.5rem;position:relative}
+  .hero::before{content:"";position:absolute;top:-20px;right:-20px;width:300px;height:300px;background:radial-gradient(circle,#ffffff06 0%,transparent 70%);pointer-events:none;z-index:0}
+  .hero-content{position:relative;z-index:1}
+  .glow-text{background:linear-gradient(90deg,#fff 0%,#aaa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .price-box{background:linear-gradient(135deg,#161616,#111);border-color:#333}
+  .step-num{background:linear-gradient(135deg,#fff,#ccc);color:#000}
+  .cred-card{border-top:2px solid #ffffff15;transition:border .2s}
+  .cred-card:hover{border-top-color:#ffffff35}
   @media(max-width:480px){
     .hero-title{font-size:24px}
     .price-main{font-size:32px}
@@ -264,7 +291,7 @@
     <div class="hero-content">
       <div class="hero-badge"><span>●</span> AI-Powered Resume Fixer · ₱99 lang</div>
       <div class="eyebrow">For VAs, Freelancers & Job Hunters</div>
-      <h1 class="hero-title">Your resume might be the reason you're <em>not getting callbacks.</em></h1>
+      <h1 class="hero-title">Your resume might be the reason you're <em class="glow-text">not getting callbacks.</em></h1>
       <p class="hero-sub">You've applied. You've waited. Nothing. No reply, no feedback — just silence. Most of the time, the problem isn't your experience. It's how you're presenting it.</p>
       <div class="stat-row">
         <div class="stat-box"><div class="stat-num">300+</div><div class="stat-label">applicants per OLJ post</div></div>
@@ -285,7 +312,7 @@
     <p>I've spent <strong>18 years in the digital space</strong>, over a decade in operations, and I've been on both sides of the hiring table — as someone who hired, and as someone job hunting. The pattern is always the same: vague bullets, weak headlines, summaries that list tasks instead of results.</p>
     <p>So I built this. An AI-powered tool that rewrites your resume sections the way a hiring manager actually wants to read them — then reviews your edits so you know exactly what improved. <strong>Fast, specific, and honest.</strong></p>
   </div>
-  <div class="divider"></div>
+  <div class="divider-label"><span>About Mary the VA</span></div>
   <div class="cred-row">
     <div class="cred-card"><div class="cred-num">18 yrs</div><div class="cred-label">in the digital space</div></div>
     <div class="cred-card"><div class="cred-num">10+ yrs</div><div class="cred-label">in operations</div></div>
@@ -293,7 +320,7 @@
     <div class="cred-card"><div class="cred-num">Both sides</div><div class="cred-label">of the hiring table</div></div>
   </div>
   <div class="divider"></div>
-  <div class="section-label" style="margin-bottom:12px">Why most resumes get rejected before a human even reads them</div>
+  <div class="divider-label"><span>Why most resumes get rejected</span></div>
   <div class="ats-box">
     <h3><i class="ti ti-robot"></i> The ATS Problem — and the Competition Problem</h3>
     <p>Most companies — including <strong>99% of Fortune 500 companies</strong> — use an <strong>Applicant Tracking System (ATS)</strong>: software that automatically screens, ranks, and filters resumes before any human sees them.</p>
@@ -307,16 +334,40 @@
     </div>
   </div>
   <div class="divider"></div>
-  <div class="section-label" style="margin-bottom:12px">What you get</div>
-  <div style="margin-bottom:1.5rem">
-    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Rewritten headline</strong> — specific to your target role, not generic</span></div>
-    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Stronger summary</strong> — outcome-focused, not a list of duties</span></div>
-    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Fixed bullet points</strong> — strong action verbs, cleaner language, more impact</span></div>
-    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Honest AI feedback</strong> — tells you exactly what's weak, no sugarcoating</span></div>
-    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Edit review</strong> — AI scores your edits and explains what improved</span></div>
-    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>DOCX download</strong> — ready to paste into your own resume file</span></div>
-    <div class="get-item"><i class="ti ti-gift get-icon"></i><span><strong>Bonus: Cover letter AI prompts</strong> — 3 ready-to-use prompts to generate a tailored cover letter, VA pitch, or cold outreach message using ChatGPT or Gemini</span></div>
+  <div class="divider-label"><span>What you get</span></div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="feature-card-icon">✍️</span>
+      <div class="feature-card-title">Rewritten Headline</div>
+      <div class="feature-card-desc">Specific to your target role — not generic, not vague</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-card-icon">📝</span>
+      <div class="feature-card-title">Stronger Summary</div>
+      <div class="feature-card-desc">Outcome-focused, not a list of duties nobody reads</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-card-icon">💪</span>
+      <div class="feature-card-title">Fixed Bullets</div>
+      <div class="feature-card-desc">Strong action verbs, cleaner language, more impact across ALL jobs</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-card-icon">🎯</span>
+      <div class="feature-card-title">Honest AI Feedback</div>
+      <div class="feature-card-desc">Tells you exactly what's weak — in Taglish, no sugarcoating</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-card-icon">⭐</span>
+      <div class="feature-card-title">Edit Review & Score</div>
+      <div class="feature-card-desc">AI grades your edits and tells you what improved</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-card-icon">📄</span>
+      <div class="feature-card-title">DOCX Download</div>
+      <div class="feature-card-desc">Ready to paste into your own resume file</div>
+    </div>
   </div>
+  <div class="get-item" style="background:#ffffff06;border:0.5px solid #ffffff10;border-radius:var(--radius);padding:12px;margin-bottom:1.5rem"><span style="font-size:18px;margin-right:8px">🎁</span><span><strong style="color:var(--text)">Bonus: Cover Letter AI Prompts</strong> — 3 ready-to-use prompts for cover letter, VA pitch, and cold outreach. Copy → paste to ChatGPT or Gemini → done.</span></div>
   <div class="price-box">
     <div class="price-top">
       <div>
@@ -331,7 +382,7 @@
   <p class="trust-note"><i class="ti ti-lock" style="font-size:12px;vertical-align:-1px"></i> Your resume is only used to generate your results. Nothing is stored.</p>
   <div class="divider"></div>
   <div class="divider"></div>
-  <div class="section-label" style="margin-bottom:12px">How to get access</div>
+  <div class="divider-label"><span>How to get access</span></div>
   <div class="payment-box">
     <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:1.25rem">Mag-message sa amin sa Facebook — automatic na makakatanggap ka ng GCash details. Pagkatapos mag-bayad ng <strong style="color:var(--text)">₱99</strong>, i-screenshot ang confirmation at i-send sa amin. Bibigyan ka namin ng access code agad.</p>
     <div class="payment-steps">
@@ -346,7 +397,7 @@
     <p style="font-size:11px;color:var(--text3);margin-top:12px">₱99 one-time · GCash only · Access sent within minutes</p>
   </div>
   <div class="divider"></div>
-  <div class="section-label" style="margin-bottom:12px">Common questions</div>
+  <div class="divider-label"><span>Common questions</span></div>
   <div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">Is this only for VAs? <i class="ti ti-chevron-down" style="font-size:14px;flex-shrink:0"></i></div>
