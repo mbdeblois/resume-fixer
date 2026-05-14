@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Fixer — by Mary the VA</title>
+<meta name="description" content="AI-powered resume rewriter for VAs and freelancers. Fix your headline, summary, and bullets in minutes. Only ₱99.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#000000;--bg2:#111111;--bg3:#1a1a1a;
+    --text:#f0f0f0;--text2:#999;--text3:#555;
+    --border:#222;--border2:#333;
+    --green:#4ade80;--green-bg:#052e16;--green-border:#166534;
+    --blue:#60a5fa;--blue-bg:#0c1a2e;--blue-border:#1e3a5f;
+    --amber:#fbbf24;--amber-bg:#1c1000;--amber-border:#713f00;
+    --red:#f87171;--red-bg:#1c0a0a;--red-border:#7f1d1d;
+    --radius:8px;--radius-lg:12px;
+  }
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+  .container{max-width:640px;margin:0 auto;padding:0 20px 60px}
+  .page{display:none}.page.active{display:block}
+  .nav{padding:20px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--border)}
+  .nav-logo{font-size:13px;font-weight:600;color:var(--text)}
+  .nav-sub{font-size:12px;color:var(--text3)}
+  .hero{padding:3rem 0 1.5rem}
+  .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-weight:500;margin-bottom:1rem}
+  .hero-title{font-size:30px;font-weight:600;line-height:1.2;color:var(--text);margin-bottom:1rem}
+  .hero-title em{font-style:normal;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px;text-decoration-color:#aaa}
+  .hero-sub{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:1.5rem}
+  .story-block{border-left:2px solid var(--border2);padding-left:1rem;margin-bottom:1.5rem}
+  .story-block p{font-size:14px;color:var(--text2);line-height:1.9;margin-bottom:.85rem}
+  .story-block p:last-child{margin-bottom:0}
+  .story-block strong{color:var(--text);font-weight:500}
+  .mary-sig{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
+  .avatar{width:44px;height:44px;border-radius:50%;background:var(--bg2);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;color:var(--text);flex-shrink:0}
+  .cred-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem}
+  .cred-card{background:var(--bg2);border-radius:var(--radius);padding:.75rem 1rem;border:0.5px solid var(--border)}
+  .cred-num{font-size:18px;font-weight:600;color:var(--text);line-height:1.2}
+  .cred-label{font-size:12px;color:var(--text3);margin-top:4px;line-height:1.4}
+  .get-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:14px;color:var(--text2);line-height:1.6}
+  .get-icon{color:var(--green);font-size:16px;margin-top:2px;flex-shrink:0}
+  .price-box{border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem}
+  .price-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:1rem}
+  .price-main{font-size:40px;font-weight:600;color:var(--text);line-height:1}
+  .price-sub{font-size:13px;color:var(--text3);margin-top:4px}
+  .price-badge{background:var(--amber-bg);color:var(--amber);font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;white-space:nowrap;border:0.5px solid var(--amber-border)}
+  .price-note{background:var(--bg2);border-radius:var(--radius);padding:.75rem 1rem;font-size:13px;color:var(--text2);line-height:1.7}
+  .price-note strong{color:var(--text);font-weight:500}
+  .btn-cta{width:100%;background:#f0f0f0;color:#0f0f0f;border:none;border-radius:var(--radius);padding:15px 20px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .15s;margin-bottom:8px}
+  .btn-cta:hover{opacity:.85}
+  .trust-note{font-size:12px;color:var(--text3);text-align:center;margin-top:8px}
+  .faq-item{border-bottom:0.5px solid var(--border);padding:13px 0}
+  .faq-q{font-size:14px;font-weight:500;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;user-select:none}
+  .faq-a{font-size:13px;color:var(--text2);line-height:1.7;margin-top:8px;display:none}
+  .faq-a.open{display:block}
+  .divider{height:0.5px;background:var(--border);margin:1.5rem 0}
+  .ats-box{background:#ffffff;border:none;border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:0}
+  .ats-box h3{font-size:14px;font-weight:600;color:#000;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
+  .ats-box p{font-size:13px;color:#333;line-height:1.8}
+  .ats-box strong{color:#000;font-weight:600}
+  .ats-stat{display:inline-block;background:#000;border:none;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:#fff;margin-top:10px;margin-right:6px}
+  .tool-wrap{padding:1.5rem 0}
+  .back-link{font-size:12px;color:var(--text3);cursor:pointer;text-decoration:underline;display:inline-block}
+  .back-link:hover{color:var(--text)}
+  .prog-row{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem}
+  .prog-step{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);white-space:nowrap}
+  .prog-step.done{color:var(--green)}
+  .prog-step.current{color:var(--text);font-weight:600}
+  .prog-dot{width:7px;height:7px;border-radius:50%;background:var(--border2);flex-shrink:0}
+  .prog-step.done .prog-dot{background:var(--green)}
+  .prog-step.current .prog-dot{background:var(--text)}
+  .prog-line{flex:1;height:0.5px;background:var(--border);min-width:10px}
+  .section-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);font-weight:500;margin-bottom:8px}
+  .upload-zone{border:0.5px dashed var(--border2);border-radius:var(--radius-lg);padding:2rem;text-align:center;cursor:pointer;transition:background .15s;margin-bottom:12px;background:var(--bg)}
+  .upload-zone:hover,.upload-zone.drag{background:var(--bg2)}
+  .upload-zone p{font-size:13px;color:var(--text3);margin-top:8px}
+  .uz-icon{font-size:28px;color:var(--text3)}
+  .uz-name{font-size:13px;font-weight:500;color:var(--text);margin-top:6px}
+  textarea,input[type=text]{width:100%;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:14px;font-family:'Inter',sans-serif;padding:10px 12px;line-height:1.6;outline:none;transition:border .15s}
+  textarea{resize:vertical}
+  textarea:focus,input[type=text]:focus{border-color:var(--text)}
+  input[type=file]{display:none}
+  .toggle-row{display:flex;gap:8px;margin-bottom:12px}
+  .toggle-btn{flex:1;background:transparent;border:0.5px solid var(--border2);border-radius:var(--radius);padding:8px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text3);transition:all .15s}
+  .toggle-btn.active{background:var(--bg2);color:var(--text);border-color:var(--text3);font-weight:500}
+  .btn-primary{background:#f0f0f0;color:#0f0f0f;border:none;border-radius:var(--radius);padding:10px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .15s}
+  .btn-primary:hover{opacity:.85}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+  .btn-outline{background:transparent;color:var(--text);border:0.5px solid var(--border2);border-radius:var(--radius);padding:10px 20px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+  .btn-outline:hover{background:var(--bg2)}
+  .btn-success{background:var(--green-bg);color:var(--green);border:0.5px solid var(--green-border);border-radius:var(--radius);padding:10px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif}
+  .btn-success:hover{opacity:.85}
+  .row-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:1rem}
+  .spinner{display:inline-block;width:13px;height:13px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:-2px;margin-right:6px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .error-box{background:var(--red-bg);color:var(--red);border:0.5px solid var(--red-border);border-radius:var(--radius);padding:10px 14px;font-size:13px;margin-bottom:12px;display:none}
+  .tip-box{background:var(--blue-bg);color:var(--blue);border:0.5px solid var(--blue-border);border-radius:var(--radius);padding:10px 14px;font-size:13px;line-height:1.6}
+  .ai-card{background:var(--bg2);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:12px;border:0.5px solid var(--border)}
+  .feedback-pill{display:inline-block;background:var(--amber-bg);color:var(--amber);font-size:11px;padding:3px 10px;border-radius:20px;margin-bottom:8px;border:0.5px solid var(--amber-border)}
+  .feedback-text{font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin-bottom:0}
+  .bullet-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
+  .bullet-row textarea{flex:1;min-height:52px}
+  .remove-btn{background:transparent;border:0.5px solid var(--border);border-radius:var(--radius);padding:6px 10px;font-size:12px;cursor:pointer;color:var(--text3);margin-top:2px;transition:all .15s}
+  .remove-btn:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+  .add-btn{background:transparent;border:0.5px dashed var(--border2);border-radius:var(--radius);padding:8px 16px;font-size:13px;cursor:pointer;color:var(--text3);width:100%;font-family:'Inter',sans-serif;transition:background .15s;margin-bottom:1.5rem}
+  .add-btn:hover{background:var(--bg2)}
+  .overall-grade{background:var(--bg2);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:1rem;border:0.5px solid var(--border)}
+  .grade-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;flex-shrink:0;border:2px solid var(--border2)}
+  .review-item{margin-bottom:1.25rem}
+  .review-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);font-weight:500;margin-bottom:6px}
+  .review-score-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .score-bar-wrap{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+  .score-bar{height:100%;border-radius:3px;transition:width .8s ease}
+  .score-num{font-size:13px;font-weight:500;color:var(--text);min-width:40px;text-align:right}
+  .prompts-section{margin-top:2rem}
+  .prompt-card{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:12px}
+  .prompt-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+  .prompt-title{font-size:13px;font-weight:600;color:var(--text)}
+  .prompt-tag{font-size:10px;font-weight:600;background:var(--amber-bg);color:var(--amber);border:0.5px solid var(--amber-border);border-radius:20px;padding:2px 8px;white-space:nowrap}
+  .prompt-body{font-size:12px;color:var(--text2);line-height:1.7;background:var(--bg3);border-radius:var(--radius);padding:10px 12px;font-family:monospace;white-space:pre-wrap;word-break:break-word;margin-bottom:10px}
+  .copy-btn{background:transparent;border:0.5px solid var(--border2);border-radius:var(--radius);padding:6px 14px;font-size:12px;cursor:pointer;color:var(--text2);font-family:'Inter',sans-serif;transition:all .15s;display:flex;align-items:center;gap:6px}
+  .copy-btn:hover{background:var(--bg3);color:var(--text)}
+  .copy-btn.copied{color:var(--green);border-color:var(--green-border)}
+  .bonus-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+  .bonus-badge{background:var(--green-bg);color:var(--green);border:0.5px solid var(--green-border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+  .review-comment{font-size:13px;color:var(--text2);line-height:1.6}
+  .loading-wrap{padding:2.5rem 0}
+  .fixes-section{margin-bottom:1.5rem}
+  .fix-card{background:var(--bg2);border:0.5px solid var(--border2);border-left:3px solid var(--amber);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:12px}
+  .fix-number{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+  .fix-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:.3px}
+  .fix-problem{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px}
+  .fix-solution{font-size:13px;color:var(--text);background:var(--bg3);border-radius:var(--radius);padding:8px 12px;line-height:1.7;border-left:2px solid var(--green)}
+  .footer{text-align:center;font-size:12px;color:var(--text3);margin-top:3rem;padding-top:1.5rem;border-top:0.5px solid var(--border)}
+  @media(max-width:480px){
+    .hero-title{font-size:24px}
+    .price-main{font-size:32px}
+    .cred-row{grid-template-columns:1fr 1fr}
+    .row-btns{flex-direction:column}
+    .row-btns button{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- LANDING -->
+<div class="page active" id="page-landing">
+  <nav class="nav">
+    <div class="nav-logo">Resume Fixer</div>
+    <div class="nav-sub">by Mary the VA</div>
+  </nav>
+  <div class="hero">
+    <div class="eyebrow">For VAs, Freelancers & Job Hunters</div>
+    <h1 class="hero-title">Your resume might be the reason you're <em>not getting callbacks.</em></h1>
+    <p class="hero-sub">You've applied. You've waited. Nothing. No reply, no feedback — just silence. Most of the time, the problem isn't your experience. It's how you're presenting it.</p>
+  </div>
+  <div class="mary-sig">
+    <div class="avatar">M</div>
+    <div>
+      <div style="font-weight:600;font-size:14px;color:var(--text)">Mary the VA</div>
+      <div style="font-size:12px;color:var(--text3)">Operations & Automation Specialist · draxxsystems.com</div>
+    </div>
+  </div>
+  <div class="story-block">
+    <p>I know what it's like to send out applications and hear nothing back. You start questioning yourself — <strong>am I not good enough?</strong> But most of the time, the problem isn't your skills. It's your resume.</p>
+    <p>I've spent <strong>18 years in the digital space</strong>, over a decade in operations, and I've been on both sides of the hiring table — as someone who hired, and as someone job hunting. The pattern is always the same: vague bullets, weak headlines, summaries that list tasks instead of results.</p>
+    <p>So I built this. An AI-powered tool that rewrites your resume sections the way a hiring manager actually wants to read them — then reviews your edits so you know exactly what improved. <strong>Fast, specific, and honest.</strong></p>
+  </div>
+  <div class="divider"></div>
+  <div class="cred-row">
+    <div class="cred-card"><div class="cred-num">18 yrs</div><div class="cred-label">in the digital space</div></div>
+    <div class="cred-card"><div class="cred-num">10+ yrs</div><div class="cred-label">in operations</div></div>
+    <div class="cred-card"><div class="cred-num">Ops Mgr</div><div class="cred-label">managed & built teams</div></div>
+    <div class="cred-card"><div class="cred-num">Both sides</div><div class="cred-label">of the hiring table</div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="section-label" style="margin-bottom:12px">Why most resumes get rejected before a human even reads them</div>
+  <div class="ats-box">
+    <h3><i class="ti ti-robot"></i> The ATS Problem — and the Competition Problem</h3>
+    <p>Most companies — including <strong>99% of Fortune 500 companies</strong> — use an <strong>Applicant Tracking System (ATS)</strong>: software that automatically screens, ranks, and filters resumes before any human sees them.</p>
+    <p style="margin-top:.75rem">If your resume isn't formatted and worded the right way, the system rejects it automatically. It doesn't matter how qualified you are. <strong>The robot never passes you through.</strong></p>
+    <p style="margin-top:.75rem">And even if you do get through? A single job post on OLJ can receive <strong>300+ applications.</strong> The hiring manager isn't reading every one — they're scanning for the ones that immediately stand out. A weak headline or vague bullets and you're skipped in seconds.</p>
+    <p style="margin-top:.75rem">This tool fixes both problems — rewrites your resume to pass ATS <em>and</em> be the one that actually gets read.</p>
+    <div style="margin-top:12px">
+      <span class="ats-stat">99% of Fortune 500 use ATS</span>
+      <span class="ats-stat">300+ applicants per OLJ post</span>
+      <span class="ats-stat">Recruiters spend ~7 sec per resume</span>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="section-label" style="margin-bottom:12px">What you get</div>
+  <div style="margin-bottom:1.5rem">
+    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Rewritten headline</strong> — specific to your target role, not generic</span></div>
+    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Stronger summary</strong> — outcome-focused, not a list of duties</span></div>
+    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Fixed bullet points</strong> — strong action verbs, cleaner language, more impact</span></div>
+    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Honest AI feedback</strong> — tells you exactly what's weak, no sugarcoating</span></div>
+    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>Edit review</strong> — AI scores your edits and explains what improved</span></div>
+    <div class="get-item"><i class="ti ti-check get-icon"></i><span><strong>DOCX download</strong> — ready to paste into your own resume file</span></div>
+    <div class="get-item"><i class="ti ti-gift get-icon"></i><span><strong>Bonus: Cover letter AI prompts</strong> — 3 ready-to-use prompts to generate a tailored cover letter, VA pitch, or cold outreach message using ChatGPT or Gemini</span></div>
+  </div>
+  <div class="price-box">
+    <div class="price-top">
+      <div>
+        <div class="price-main">₱99</div>
+        <div class="price-sub">one-time · instant access</div>
+      </div>
+      <div class="price-badge">Launch price</div>
+    </div>
+    <div class="price-note">Yes, it's only ₱99 — and that's intentional. <strong>A resume writer charges ₱2,000–₱5,000.</strong> A Starbucks coffee costs more than this. The price is low because I want it accessible to anyone who needs it — but it won't stay this low forever.</div>
+  </div>
+  <button class="btn-cta" onclick="goToTool()"><i class="ti ti-arrow-right"></i> Fix My Resume — ₱99</button>
+  <p class="trust-note"><i class="ti ti-lock" style="font-size:12px;vertical-align:-1px"></i> Your resume is only used to generate your results. Nothing is stored.</p>
+  <div class="divider"></div>
+  <div class="section-label" style="margin-bottom:12px">Common questions</div>
+  <div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is this only for VAs? <i class="ti ti-chevron-down" style="font-size:14px;flex-shrink:0"></i></div>
+      <div class="faq-a">No — it works for any job seeker. VAs, freelancers, fresh grads, career shifters. As long as you have a resume and want it to be stronger, this tool works for you.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I pay? <i class="ti ti-chevron-down" style="font-size:14px;flex-shrink:0"></i></div>
+      <div class="faq-a">Via GCash only. DM Mary the VA on Facebook for the GCash number — access is sent right after payment is confirmed.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is my resume safe? <i class="ti ti-chevron-down" style="font-size:14px;flex-shrink:0"></i></div>
+      <div class="faq-a">Yes. Your resume is only used to generate your results in real time. Nothing is saved or stored anywhere.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Will the output actually be good? <i class="ti ti-chevron-down" style="font-size:14px;flex-shrink:0"></i></div>
+      <div class="faq-a">The more detail you give — especially your target job title — the better the output. You can edit everything before downloading, and the review step will tell you honestly if your edits made it stronger.</div>
+    </div>
+  </div>
+  <div class="footer">Resume Fixer by Mary the VA · <a href="https://draxxsystems.com" style="color:var(--text3)">draxxsystems.com</a></div>
+</div>
+
+<!-- TOOL -->
+<div class="page" id="page-tool">
+  <nav class="nav">
+    <span class="back-link" onclick="goBack()">← Back</span>
+    <div class="nav-sub">Resume Fixer</div>
+  </nav>
+  <div class="tool-wrap">
+    <div class="prog-row">
+      <div class="prog-step current" id="p1"><span class="prog-dot"></span>Upload</div>
+      <div class="prog-line"></div>
+      <div class="prog-step" id="p2"><span class="prog-dot"></span>AI fixes</div>
+      <div class="prog-line"></div>
+      <div class="prog-step" id="p3"><span class="prog-dot"></span>Edit</div>
+      <div class="prog-line"></div>
+      <div class="prog-step" id="p4"><span class="prog-dot"></span>Review</div>
+    </div>
+
+    <div id="s-upload">
+      <div class="section-label">Target job title <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px">(optional but recommended)</span></div>
+      <input type="text" id="job-title" placeholder="e.g. Virtual Assistant, Operations Manager, Executive VA..." style="margin-bottom:1.5rem">
+      <div class="section-label">Your resume</div>
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="tab-upload" onclick="switchTab('upload')"><i class="ti ti-upload"></i> Upload file</button>
+        <button class="toggle-btn" id="tab-paste" onclick="switchTab('paste')"><i class="ti ti-clipboard"></i> Paste text</button>
+      </div>
+      <div id="panel-upload">
+        <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+          <i class="ti ti-file-text uz-icon"></i>
+          <div class="uz-name" id="file-name">Click to upload or drag & drop</div>
+          <p>Supports PDF or .txt files</p>
+        </div>
+        <input type="file" id="file-input" accept=".pdf,.txt" onchange="handleFile(this.files[0])">
+      </div>
+      <div id="panel-paste" style="display:none">
+        <textarea id="resume-paste" rows="12" placeholder="Paste your full resume here — headline, summary, work experience, bullets..."></textarea>
+      </div>
+      <div class="error-box" id="err-upload"></div>
+      <div style="margin-top:12px">
+        <button class="btn-primary" id="analyze-btn" onclick="analyzeResume()">Analyze & Fix ↗</button>
+      </div>
+    </div>
+
+    <div id="s-loading" style="display:none">
+      <div class="loading-wrap">
+        <p class="section-label" style="margin-bottom:6px">AI is reviewing your resume</p>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:1.5rem">This takes about 10–15 seconds...</p>
+        <div id="loading-status" style="font-size:14px;color:var(--text2)"><span class="spinner"></span> Reading your resume...</div>
+      </div>
+    </div>
+
+    <div id="s-results" style="display:none">
+      <div class="tip-box" id="overall-fb" style="margin-bottom:1.5rem"></div>
+
+      <div id="fixes-section" style="display:none;margin-bottom:1.5rem">
+        <div class="section-label" style="margin-bottom:12px">Important fixes for your resume</div>
+        <div id="fixes-container"></div>
+      </div>
+
+      <div class="section-label">Headline</div>
+      <div class="ai-card" id="hcard" style="display:none"><div class="feedback-pill">AI feedback</div><p class="feedback-text" id="hfb"></p></div>
+      <input type="text" id="ed-headline" placeholder="Your rewritten headline..." style="margin-bottom:1.5rem">
+      <div class="section-label">Professional summary</div>
+      <div class="ai-card" id="scard" style="display:none"><div class="feedback-pill">AI feedback</div><p class="feedback-text" id="sfb"></p></div>
+      <textarea id="ed-summary" rows="5" placeholder="Your rewritten summary..." style="margin-bottom:1.5rem"></textarea>
+      <div class="section-label">Key bullets</div>
+      <div class="ai-card" id="bcard" style="display:none"><div class="feedback-pill">AI feedback</div><p class="feedback-text" id="bfb"></p></div>
+      <div id="bullets-editor"></div>
+      <button class="add-btn" onclick="addBullet('')">+ Add bullet</button>
+      <div class="divider"></div>
+      <div class="row-btns">
+        <button class="btn-primary" onclick="reviewEdits()"><i class="ti ti-eye"></i> Review my edits ↗</button>
+        <button class="btn-success" onclick="downloadDOCX()"><i class="ti ti-download"></i> Download DOCX</button>
+        <button class="btn-outline" onclick="resetTool()">Start over</button>
+      </div>
+      <div class="error-box" id="err-dl"></div>
+    </div>
+
+    <div id="s-review-loading" style="display:none">
+      <div class="loading-wrap">
+        <p class="section-label" style="margin-bottom:6px">Reviewing your edits</p>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:1.5rem">Checking what you changed and how it reads now...</p>
+        <div id="review-loading-status" style="font-size:14px;color:var(--text2)"><span class="spinner"></span> Comparing before and after...</div>
+      </div>
+    </div>
+
+    <div id="s-review" style="display:none">
+      <div class="overall-grade">
+        <div class="grade-circle" id="grade-circle">—</div>
+        <div id="grade-summary" style="font-size:14px;color:var(--text2);line-height:1.6"></div>
+      </div>
+      <div id="review-scores"></div>
+      <div class="divider"></div>
+      <div class="row-btns">
+        <button class="btn-success" onclick="downloadDOCX()"><i class="ti ti-download"></i> Download DOCX</button>
+        <button class="btn-outline" onclick="backToEdit()"><i class="ti ti-edit"></i> Keep editing</button>
+        <button class="btn-outline" onclick="resetTool()">Start over</button>
+      </div>
+
+      <div class="prompts-section">
+        <div class="divider"></div>
+        <div class="bonus-header">
+          <div class="section-label" style="margin-bottom:0">Bonus</div>
+          <span class="bonus-badge">🎁 Free with your fix</span>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem;line-height:1.7">Copy any of these prompts, paste into <strong style="color:var(--text)">ChatGPT or Gemini</strong>, and get a tailored cover letter or outreach message in seconds. Fill in the <span style="color:var(--amber)">[brackets]</span> before running.</p>
+
+        <div class="prompt-card">
+          <div class="prompt-card-header">
+            <div class="prompt-title"><i class="ti ti-mail"></i> General Cover Letter</div>
+            <span class="prompt-tag">Any role</span>
+          </div>
+          <div class="prompt-body" id="prompt-1">Write a professional cover letter for the following job application.
+
+My name: [Your Name]
+Role I am applying for: [Job Title]
+Company/Client: [Company or Client Name]
+
+My resume summary:
+[Paste your rewritten summary here]
+
+Key skills and experience:
+[Paste 3-4 of your best bullets here]
+
+Job description or requirements:
+[Paste the job post here]
+
+Instructions: Write a 3-paragraph cover letter. First paragraph: hook with my most relevant experience. Second paragraph: match my skills to their specific needs. Third paragraph: confident close with a call to action. Keep it under 250 words. Professional but not stiff.</div>
+          <button class="copy-btn" onclick="copyPrompt('prompt-1', this)"><i class="ti ti-copy"></i> Copy prompt</button>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-card-header">
+            <div class="prompt-title"><i class="ti ti-briefcase"></i> VA Pitch (OLJ / Upwork)</div>
+            <span class="prompt-tag">VA roles</span>
+          </div>
+          <div class="prompt-body" id="prompt-2">Write a short, punchy VA job application message for an online job platform like OLJ or Upwork.
+
+My name: [Your Name]
+Role: [VA / Executive VA / Admin VA / etc.]
+Years of experience: [X years]
+Top 3 skills: [Skill 1], [Skill 2], [Skill 3]
+Tools I use: [e.g. GHL, Google Sheets, Trello, Slack]
+
+Job post I am applying to:
+[Paste the job post here]
+
+Instructions: Write a 150-200 word application message. Start with a strong first line that immediately shows I understand their problem. Mention my most relevant experience. End with a clear call to action. Do not start with "I am writing to apply." Sound confident and human, not robotic.</div>
+          <button class="copy-btn" onclick="copyPrompt('prompt-2', this)"><i class="ti ti-copy"></i> Copy prompt</button>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-card-header">
+            <div class="prompt-title"><i class="ti ti-message"></i> Cold Outreach / DM</div>
+            <span class="prompt-tag">Direct clients</span>
+          </div>
+          <div class="prompt-body" id="prompt-3">Write a short cold outreach message I can send via Facebook, LinkedIn, or email to a potential client or employer.
+
+My name: [Your Name]
+What I do: [e.g. VA specializing in operations and automation]
+Who I am reaching out to: [e.g. a digital agency owner, a coach, an e-commerce brand]
+What problem I solve for them: [e.g. I help them save 10+ hours a week by automating their workflows]
+Any mutual connection or reason for reaching out: [Optional]
+
+Instructions: Write a 3-5 sentence cold message. Make it feel personal, not copy-paste. Lead with their problem, not my background. End with a low-pressure CTA like asking if they are open to a quick chat. Keep it under 100 words.</div>
+          <button class="copy-btn" onclick="copyPrompt('prompt-3', this)"><i class="ti ti-copy"></i> Copy prompt</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>
+const GROQ_KEY='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';
+const GROQ_URL='https://api.groq.com/openai/v1/chat/completions';
+
+let resumeText='',currentTab='upload',originalAIOutput={};
+if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+async function callGemini(prompt){
+  const resp=await fetch(GROQ_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],temperature:0.7,max_tokens:1200})});
+  const data=await resp.json();
+  if(data.error)throw new Error('Groq: '+data.error.message);
+  const text=data.choices?.[0]?.message?.content||'';
+  if(!text)throw new Error('Empty response from Groq');
+  return text.replace(/```json|```/g,'').trim();
+}
+
+function toggleFaq(el){el.nextElementSibling.classList.toggle('open')}
+function goToTool(){document.getElementById('page-landing').classList.remove('active');document.getElementById('page-tool').classList.add('active');window.scrollTo(0,0)}
+function goBack(){document.getElementById('page-tool').classList.remove('active');document.getElementById('page-landing').classList.add('active');window.scrollTo(0,0)}
+function backToEdit(){document.getElementById('s-review').style.display='none';document.getElementById('s-results').style.display='block';setStep(3)}
+function switchTab(t){
+  currentTab=t;
+  document.getElementById('tab-upload').classList.toggle('active',t==='upload');
+  document.getElementById('tab-paste').classList.toggle('active',t==='paste');
+  document.getElementById('panel-upload').style.display=t==='upload'?'block':'none';
+  document.getElementById('panel-paste').style.display=t==='paste'?'block':'none';
+}
+function dragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('drag')}
+function dragLeave(){document.getElementById('drop-zone').classList.remove('drag')}
+function dropFile(e){e.preventDefault();dragLeave();const f=e.dataTransfer.files[0];if(f)handleFile(f)}
+
+async function handleFile(f){
+  if(!f)return;
+  const nameEl=document.getElementById('file-name');
+  nameEl.textContent=f.name;
+  if(f.type==='application/pdf'||f.name.endsWith('.pdf')){
+    nameEl.textContent=f.name+' — reading...';
+    try{
+      const ab=await f.arrayBuffer();
+      if(!window.pdfjsLib){resumeText='[PDF loaded]';nameEl.textContent=f.name+' ✓';return}
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const pdf=await pdfjsLib.getDocument({data:ab}).promise;
+      let text='';
+      for(let i=1;i<=pdf.numPages;i++){const pg=await pdf.getPage(i);const tc=await pg.getTextContent();text+=tc.items.map(s=>s.str).join(' ')+'\n'}
+      resumeText=text.trim();nameEl.textContent=f.name+' ✓';
+    }catch(e){nameEl.textContent='Could not read PDF — try the paste tab';console.error(e)}
+  }else{
+    const reader=new FileReader();
+    reader.onload=e=>{resumeText=e.target.result;nameEl.textContent=f.name+' ✓'};
+    reader.readAsText(f);
+  }
+}
+
+function setStep(n){['p1','p2','p3','p4'].forEach((id,i)=>{const el=document.getElementById(id);el.classList.remove('done','current');if(i<n-1)el.classList.add('done');else if(i===n-1)el.classList.add('current')})}
+function showErr(id,msg){const el=document.getElementById(id);el.style.display='block';el.textContent=msg}
+function hideErr(id){document.getElementById(id).style.display='none'}
+function addBullet(text){
+  const editor=document.getElementById('bullets-editor');
+  const row=document.createElement('div');row.className='bullet-row';
+  row.innerHTML=`<textarea class="bullet-ta" rows="2" placeholder="Bullet point...">${text}</textarea><button class="remove-btn" onclick="this.parentElement.remove()"><i class="ti ti-x"></i></button>`;
+  editor.appendChild(row);
+}
+
+async function analyzeResume(){
+  hideErr('err-upload');
+  const text=currentTab==='paste'?document.getElementById('resume-paste').value.trim():resumeText.trim();
+  if(!text||text.length<80){showErr('err-upload','Please upload your resume or paste the text first.');return}
+  const jobTitle=document.getElementById('job-title').value.trim();
+  const btn=document.getElementById('analyze-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Analyzing...';
+  document.getElementById('s-upload').style.display='none';
+  document.getElementById('s-loading').style.display='block';
+  setStep(2);
+  const msgs=['Reading your resume...','Spotting what needs fixing...','Rewriting the headline...','Polishing the summary...','Strengthening your bullets...'];
+  let ti=0;
+  const statusEl=document.getElementById('loading-status');
+  const tInt=setInterval(()=>{ti=(ti+1)%msgs.length;statusEl.innerHTML=`<span class="spinner"></span> ${msgs[ti]}`},2800);
+  const jobCtx=jobTitle?`Target role: "${jobTitle}". Tailor all rewrites to this specific role.`:'No target role — write for a general VA / operations professional.';
+  const prompt=`You are a brutally honest resume coach helping Filipino VAs and job seekers. Analyze the ENTIRE resume — headline, summary, bullets, competencies, skills, every section visible. Do not skip anything.
+
+${jobCtx}
+
+Resume:
+"""
+${text.slice(0,4000)}
+"""
+
+Return ONLY valid JSON. No markdown, no backticks, no explanation outside the JSON.
+
+Write feedback like a straight-talking mentor: name SPECIFIC words or phrases that are weak, explain WHY it hurts them psychologically with clients or hiring managers, give a clear fix. Use punchy caps titles for fixes.
+
+{
+  "overall_feedback": "3-4 sentences. Name the 2-3 biggest problems. Start with: Here is what is hurting you right now — then explain the psychological impact on the hiring manager or client.",
+  "fixes": [
+    {
+      "number": 1,
+      "title": "REMOVE THE YEARS OF EXPERIENCE",
+      "problem": "Saying 17 or 18 years makes clients think: expensive, overqualified, corporate, senior-senior. Especially on OLJ. It triggers budget anxiety before they even read your skills.",
+      "fix": "Remove the years from your headline and summary. Let your results speak instead. Replace with your specialization and the outcome you deliver."
+    },
+    {
+      "number": 2,
+      "title": "IDENTIFY REAL FIX 2 FROM RESUME",
+      "problem": "Describe the actual problem found in this specific resume and why it hurts",
+      "fix": "Give the specific fix with example wording from their actual content"
+    },
+    {
+      "number": 3,
+      "title": "IDENTIFY REAL FIX 3 FROM RESUME",
+      "problem": "Describe the actual problem found in this specific resume and why it hurts",
+      "fix": "Give the specific fix with example wording — add a direct business outcome line if missing"
+    }
+  ],
+  "headline": {
+    "feedback": "What is wrong with this headline and why it hurts. Name the specific weak words.",
+    "rewrite": "Strong specific rewritten headline for their target role"
+  },
+  "summary": {
+    "feedback": "What is weak — task-based? Too long? No outcomes? Name specific phrases that are hurting them.",
+    "rewrite": "3-4 sentence punchy summary leading with outcomes, positioning them as a solution not just a candidate"
+  },
+  "bullets": {
+    "feedback": "What pattern of weakness — vague verbs? No metrics? Too duty-based? Name specific examples from their actual bullets.",
+    "rewrites": ["bullet 1","bullet 2","bullet 3","bullet 4","bullet 5","bullet 6"]
+  }
+}
+
+JSON only. Nothing else.`;
+  try{
+    const raw=await callGemini(prompt);
+    clearInterval(tInt);
+    const result=JSON.parse(raw);
+    originalAIOutput=result;
+    populateResults(result);
+    document.getElementById('s-loading').style.display='none';
+    document.getElementById('s-results').style.display='block';
+    setStep(3);
+  }catch(e){
+    clearInterval(tInt);
+    btn.disabled=false;btn.innerHTML='Analyze & Fix ↗';
+    document.getElementById('s-loading').style.display='none';
+    document.getElementById('s-upload').style.display='block';
+    showErr('err-upload','Error: '+e.message);
+    setStep(1);console.error(e);
+  }
+}
+
+function populateResults(r){
+  document.getElementById('overall-fb').innerHTML=`<strong>Overall:</strong> ${r.overall_feedback||''}`;
+
+  // Render important fixes
+  const fixesEl=document.getElementById('fixes-container');
+  if(fixesEl && r.fixes?.length){
+    fixesEl.innerHTML='';
+    r.fixes.forEach(f=>{
+      const card=document.createElement('div');card.className='fix-card';
+      card.innerHTML=`<div class="fix-number">FIX #${f.number}</div><div class="fix-title">${f.title}</div><div class="fix-problem">${f.problem}</div><div class="fix-solution"><strong>Fix:</strong> ${f.fix}</div>`;
+      fixesEl.appendChild(card);
+    });
+    document.getElementById('fixes-section').style.display='block';
+  }
+
+  if(r.headline?.feedback){document.getElementById('hfb').textContent=r.headline.feedback;document.getElementById('hcard').style.display='block'}
+  document.getElementById('ed-headline').value=r.headline?.rewrite||'';
+  if(r.summary?.feedback){document.getElementById('sfb').textContent=r.summary.feedback;document.getElementById('scard').style.display='block'}
+  document.getElementById('ed-summary').value=r.summary?.rewrite||'';
+  if(r.bullets?.feedback){document.getElementById('bfb').textContent=r.bullets.feedback;document.getElementById('bcard').style.display='block'}
+  document.getElementById('bullets-editor').innerHTML='';
+  (r.bullets?.rewrites||[]).forEach(b=>addBullet(b));
+}
+
+async function reviewEdits(){
+  const headline=document.getElementById('ed-headline').value.trim();
+  const summary=document.getElementById('ed-summary').value.trim();
+  const bullets=Array.from(document.querySelectorAll('.bullet-ta')).map(t=>t.value.trim()).filter(Boolean);
+  const jobTitle=document.getElementById('job-title').value.trim();
+  document.getElementById('s-results').style.display='none';
+  document.getElementById('s-review-loading').style.display='block';
+  setStep(4);
+  const revMsgs=['Comparing before and after...','Checking headline strength...','Scoring your summary...','Reviewing the bullets...'];
+  let ti=0;
+  const statusEl=document.getElementById('review-loading-status');
+  const tInt=setInterval(()=>{ti=(ti+1)%revMsgs.length;statusEl.innerHTML=`<span class="spinner"></span> ${revMsgs[ti]}`},2500);
+  const prompt=`You are an expert resume coach. Evaluate the user's edited resume sections and return ONLY a valid JSON object — no markdown, no backticks.
+
+${jobTitle?`Target role: "${jobTitle}"`:'No specific target role.'}
+
+AI-generated versions before edits:
+- Headline: ${originalAIOutput.headline?.rewrite||'(none)'}
+- Summary: ${originalAIOutput.summary?.rewrite||'(none)'}
+- Bullets: ${(originalAIOutput.bullets?.rewrites||[]).join(' | ')}
+
+User final edited versions:
+- Headline: ${headline||'(empty)'}
+- Summary: ${summary||'(empty)'}
+- Bullets: ${bullets.join(' | ')||'(none)'}
+
+Return exactly this JSON:
+{
+  "grade": "B",
+  "overall": "2-3 honest sentences. What is strong now, what is still weak. Name specific words or phrases.",
+  "sections": [
+    {"name":"Headline","score":85,"comment":"1-2 honest sentences. Name specific words that work or do not."},
+    {"name":"Summary","score":72,"comment":"Is it outcome-focused or still task-based? Name specific phrases."},
+    {"name":"Bullets","score":68,"comment":"Are they using action verbs? Specific enough? Be direct."}
+  ]
+}
+
+Be honest, not harsh, not sugarcoating. JSON only.`;
+  try{
+    const raw=await callGemini(prompt);
+    clearInterval(tInt);
+    const result=JSON.parse(raw);
+    renderReview(result);
+    document.getElementById('s-review-loading').style.display='none';
+    document.getElementById('s-review').style.display='block';
+  }catch(e){
+    clearInterval(tInt);
+    document.getElementById('s-review-loading').style.display='none';
+    document.getElementById('s-results').style.display='block';
+    setStep(3);console.error(e);
+  }
+}
+
+function renderReview(r){
+  const grade=r.grade||'B';
+  const gradeColor={A:'#1a6b3c',B:'#185fa5',C:'#854f0b',D:'#a32d2d'}[grade]||'#555';
+  const gc=document.getElementById('grade-circle');
+  gc.textContent=grade;gc.style.color=gradeColor;gc.style.borderColor=gradeColor;
+  document.getElementById('grade-summary').innerHTML=`<strong style="color:var(--text)">Here is your honest review</strong><br>${r.overall||''}`;
+  const scoresEl=document.getElementById('review-scores');
+  scoresEl.innerHTML='';
+  (r.sections||[]).forEach(s=>{
+    const score=Math.min(100,Math.max(0,s.score||0));
+    const barColor=score>=80?'#1a6b3c':score>=60?'#185fa5':'#854f0b';
+    const item=document.createElement('div');item.className='review-item';
+    item.innerHTML=`<div class="review-label">${s.name}</div><div class="review-score-row"><div class="score-bar-wrap"><div class="score-bar" style="width:${score}%;background:${barColor}"></div></div><div class="score-num">${score}/100</div></div><div class="review-comment">${s.comment||''}</div>`;
+    scoresEl.appendChild(item);
+  });
+}
+
+async function downloadDOCX(){
+  const headline=document.getElementById('ed-headline').value.trim();
+  const summary=document.getElementById('ed-summary').value.trim();
+  const bullets=Array.from(document.querySelectorAll('.bullet-ta')).map(t=>t.value.trim()).filter(Boolean);
+  if(!window.docx)return;
+  const{Document,Packer,Paragraph,TextRun,AlignmentType,BorderStyle,LevelFormat}=window.docx;
+  try{
+    const doc=new Document({
+      numbering:{config:[{reference:'bul',levels:[{level:0,format:LevelFormat.BULLET,text:'•',alignment:AlignmentType.LEFT,style:{paragraph:{indent:{left:440,hanging:260}}}}]}]},
+      sections:[{properties:{page:{margin:{top:900,bottom:900,left:900,right:900}}},children:[
+        new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:80},children:[new TextRun({text:'RESUME — FIXED SECTIONS',bold:true,size:24,font:'Calibri',color:'1A2940'})]}),
+        headline?new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:220},children:[new TextRun({text:headline,size:22,color:'185FA5',font:'Calibri',bold:true})]}):null,
+        new Paragraph({spacing:{after:60},border:{bottom:{style:BorderStyle.SINGLE,size:4,color:'185FA5',space:4}},children:[new TextRun({text:'Professional Summary',bold:true,size:22,font:'Calibri',color:'1A2940'})]}),
+        summary?new Paragraph({spacing:{before:100,after:260},children:[new TextRun({text:summary,size:20,font:'Calibri'})]}):null,
+        new Paragraph({spacing:{after:60},border:{bottom:{style:BorderStyle.SINGLE,size:4,color:'185FA5',space:4}},children:[new TextRun({text:'Key Bullets',bold:true,size:22,font:'Calibri',color:'1A2940'})]}),
+        ...bullets.map(b=>new Paragraph({numbering:{reference:'bul',level:0},spacing:{before:40,after:40},children:[new TextRun({text:b,size:20,font:'Calibri'})]})),
+        new Paragraph({spacing:{before:300},alignment:AlignmentType.CENTER,children:[new TextRun({text:'Resume Fixer by Mary the VA · draxxsystems.com',size:16,color:'888888',font:'Calibri',italics:true})]})
+      ].filter(Boolean)}]
+    });
+    const blob=await Packer.toBlob(doc);
+    const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'resume-fixed-by-mary.docx'});
+    a.click();URL.revokeObjectURL(a.href);
+  }catch(e){console.error(e)}
+}
+
+function copyPrompt(id, btn){
+  const text=document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.innerHTML='<i class="ti ti-check"></i> Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.innerHTML='<i class="ti ti-copy"></i> Copy prompt';btn.classList.remove('copied')},2000);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=text;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    btn.innerHTML='<i class="ti ti-check"></i> Copied!';btn.classList.add('copied');
+    setTimeout(()=>{btn.innerHTML='<i class="ti ti-copy"></i> Copy prompt';btn.classList.remove('copied')},2000);
+  });
+}
+
+function resetTool(){
+  resumeText='';originalAIOutput={};
+  document.getElementById('file-name').textContent='Click to upload or drag & drop';
+  document.getElementById('resume-paste').value='';
+  document.getElementById('job-title').value='';
+  document.getElementById('ed-headline').value='';
+  document.getElementById('ed-summary').value='';
+  document.getElementById('bullets-editor').innerHTML='';
+  ['hcard','scard','bcard','fixes-section'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('fixes-container').innerHTML='';
+  ['s-results','s-review','s-review-loading'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('s-upload').style.display='block';
+  const btn=document.getElementById('analyze-btn');
+  btn.disabled=false;btn.innerHTML='Analyze & Fix ↗';
+  setStep(1);
+}
+</script>
+</body>
+</html>
