@@ -11,15 +11,18 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --bg:#000000;--bg2:#111111;--bg3:#1a1a1a;
-    --text:#f0f0f0;--text2:#999;--text3:#555;
-    --border:#222;--border2:#333;
+    --bg:#000000;--bg2:#0d0d0d;--bg3:#1a1a1a;
+    --text:#f0f0f0;--text2:#999;--text3:#444;
+    --border:#1f1f1f;--border2:#2a2a2a;
     --green:#4ade80;--green-bg:#052e16;--green-border:#166534;
     --blue:#60a5fa;--blue-bg:#0c1a2e;--blue-border:#1e3a5f;
     --amber:#fbbf24;--amber-bg:#1c1000;--amber-border:#713f00;
     --red:#f87171;--red-bg:#1c0a0a;--red-border:#7f1d1d;
     --radius:8px;--radius-lg:12px;
+    --accent:#f0f0f0;
   }
+  html{scroll-behavior:smooth}
+  ::selection{background:#f0f0f050}
   body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
   .container{max-width:640px;margin:0 auto;padding:0 20px 60px}
   .page{display:none}.page.active{display:block}
@@ -129,6 +132,19 @@
   .bonus-badge{background:var(--green-bg);color:var(--green);border:0.5px solid var(--green-border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
   .review-comment{font-size:13px;color:var(--text2);line-height:1.6}
   .loading-wrap{padding:2.5rem 0}
+  .job-card{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:10px}
+  .job-card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+  .job-card-company{font-size:11px;color:var(--text3);margin-bottom:8px}
+  .job-card-feedback{font-size:13px;color:var(--text2);line-height:1.7}
+  .ats-sample{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.5rem;margin-top:1.5rem}
+  .ats-sample-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:1rem}
+  .ats-sample-name{font-size:18px;font-weight:700;color:var(--text);text-align:center;margin-bottom:4px;font-family:monospace}
+  .ats-sample-contact{font-size:11px;color:var(--text3);text-align:center;margin-bottom:1rem;font-family:monospace}
+  .ats-section-head{font-size:12px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border2);padding-bottom:4px;margin:12px 0 8px}
+  .ats-line{font-size:12px;color:var(--text2);font-family:monospace;line-height:1.7;margin-bottom:3px}
+  .ats-bullet{font-size:12px;color:var(--text2);font-family:monospace;line-height:1.7;padding-left:12px;margin-bottom:3px}
+  .ats-bullet::before{content:"• ";color:var(--text3)}
+  .ats-note{font-size:11px;color:var(--amber);margin-top:12px;line-height:1.6;padding:8px 12px;background:var(--amber-bg);border-radius:var(--radius);border:0.5px solid var(--amber-border)}
   .fixes-section{margin-bottom:1.5rem}
   .fix-card{background:var(--bg2);border:0.5px solid var(--border2);border-left:3px solid var(--amber);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:12px}
   .fix-number{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
@@ -136,6 +152,24 @@
   .fix-problem{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px}
   .fix-solution{font-size:13px;color:var(--text);background:var(--bg3);border-radius:var(--radius);padding:8px 12px;line-height:1.7;border-left:2px solid var(--green)}
   .footer{text-align:center;font-size:12px;color:var(--text3);margin-top:3rem;padding-top:1.5rem;border-top:0.5px solid var(--border)}
+  .payment-section{margin-bottom:1.5rem}
+  .payment-box{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.5rem;text-align:center}
+  .payment-steps{text-align:left;margin:1.25rem 0}
+  .payment-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;font-size:14px;color:var(--text2);line-height:1.6}
+  .step-num{background:var(--text);color:var(--bg);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+  .qr-wrap{display:inline-block;background:#fff;border-radius:var(--radius);padding:12px;margin:1rem 0}
+  .qr-wrap img{width:180px;height:180px;display:block}
+  .gcash-name{font-size:14px;font-weight:600;color:var(--text);margin-top:8px}
+  .gcash-note{font-size:12px;color:var(--text3);margin-top:4px}
+  .fb-btn{display:inline-flex;align-items:center;gap:8px;background:#1877f2;color:#fff;border:none;border-radius:var(--radius);padding:10px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:"Inter",sans-serif;text-decoration:none;margin-top:1rem}
+  .fb-btn:hover{opacity:.85}
+  .ats-guide{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1.5rem}
+  .ats-guide-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+  .ats-guide-header h4{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
+  .ats-guide-body{display:none;padding:0 16px 16px}
+  .ats-guide-body.open{display:block}
+  .ats-sample{background:var(--bg3);border-radius:var(--radius);padding:1rem;font-size:12px;font-family:monospace;color:var(--text2);line-height:1.8;white-space:pre-wrap;border:0.5px solid var(--border)}
+  .ats-tip{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px;padding:8px 12px;background:var(--bg3);border-radius:var(--radius);border-left:2px solid var(--amber)}
   @media(max-width:480px){
     .hero-title{font-size:24px}
     .price-main{font-size:32px}
@@ -143,10 +177,81 @@
     .row-btns{flex-direction:column}
     .row-btns button{width:100%}
   }
+
+  /* PASSWORD PAGE */
+  .pw-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#000;padding:20px}
+  .pw-box{width:100%;max-width:420px;text-align:center}
+  .pw-logo{font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:2.5rem}
+  .pw-icon{width:64px;height:64px;background:var(--bg2);border:0.5px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:24px}
+  .pw-title{font-size:22px;font-weight:600;color:var(--text);margin-bottom:.5rem}
+  .pw-sub{font-size:14px;color:var(--text2);margin-bottom:2rem;line-height:1.7}
+  .pw-input-wrap{position:relative;margin-bottom:12px}
+  .pw-input{width:100%;background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:13px 16px;font-size:15px;color:var(--text);font-family:'Inter',sans-serif;outline:none;text-align:center;letter-spacing:2px;transition:border .15s}
+  .pw-input:focus{border-color:var(--text3)}
+  .pw-input::placeholder{letter-spacing:0;color:var(--text3)}
+  .pw-btn{width:100%;background:#f0f0f0;color:#000;border:none;border-radius:var(--radius);padding:13px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .15s;margin-bottom:1.5rem}
+  .pw-btn:hover{opacity:.85}
+  .pw-err{font-size:13px;color:var(--red);margin-bottom:12px;display:none}
+  .pw-gcash{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.25rem;text-align:left}
+  .pw-gcash-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+  .pw-gcash-steps{font-size:13px;color:var(--text2);line-height:2}
+  .pw-gcash-steps strong{color:var(--text)}
+  .pw-price-pill{display:inline-block;background:#f0f0f0;color:#000;font-size:13px;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:1.25rem}
+
+  /* HERO VISUAL IMPROVEMENTS */
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:0.5px solid var(--border2);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--text3);margin-bottom:1.25rem}
+  .hero-badge span{color:var(--green);font-size:8px}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1.5rem 0}
+  .stat-box{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:.85rem;text-align:center}
+  .stat-num{font-size:22px;font-weight:700;color:var(--text);line-height:1}
+  .stat-label{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.4}
+  .section-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:.75rem}
+  .section-tag::before{content:"";display:inline-block;width:16px;height:0.5px;background:var(--text3)}
+
+  /* IMPROVED CARD VISUALS */
+  .get-item i{width:28px;height:28px;background:var(--bg2);border:0.5px solid var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+  .testimonial-box{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1.5rem;position:relative}
+  .testimonial-box::before{content:'"';font-size:48px;color:var(--border2);position:absolute;top:8px;left:14px;line-height:1;font-family:Georgia,serif}
+  .testimonial-text{font-size:14px;color:var(--text2);line-height:1.8;padding-left:20px;font-style:italic}
+  .testimonial-author{font-size:12px;color:var(--text3);margin-top:.75rem;padding-left:20px}
+  .testimonial-author strong{color:var(--text)}
+
+  /* FLOATING DOTS BG */
+  .hero-visual{position:relative;overflow:hidden}
+  .dot-grid{position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(circle,#ffffff08 1px,transparent 1px);background-size:24px 24px;pointer-events:none;z-index:0}
+  .hero-content{position:relative;z-index:1}
+
+  /* DIVIDER WITH LABEL */
+  .divider-label{display:flex;align-items:center;gap:12px;margin:1.5rem 0}
+  .divider-label span{font-size:11px;color:var(--text3);white-space:nowrap}
+  .divider-label::before,.divider-label::after{content:"";flex:1;height:0.5px;background:var(--border)}
 </style>
 </head>
 <body>
 <div class="container">
+
+<!-- PASSWORD PAGE -->
+<div id="page-password" class="pw-page" style="display:none">
+  <div class="pw-box">
+    <div class="pw-logo">Resume Fixer · by Mary the VA</div>
+    <div class="pw-icon">🔐</div>
+    <h2 class="pw-title">Enter your access code</h2>
+    <p class="pw-sub">Para ma-access ang tool, kailangan mo muna mag-bayad.<br>GCash lang — ₱99 one-time.</p>
+    <div class="pw-price-pill">₱99 one-time access</div>
+    <input class="pw-input" type="password" id="pw-input" placeholder="Enter access code..." onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="pw-err" id="pw-err">❌ Mali ang code. Check your DM from Mary the VA.</div>
+    <button class="pw-btn" onclick="checkPassword()">Unlock Tool →</button>
+    <div class="pw-gcash">
+      <div class="pw-gcash-title">💚 Paano mag-access?</div>
+      <div class="pw-gcash-steps">
+        1. <strong>Send ₱99</strong> via GCash<br>
+        2. <strong>DM Mary the VA</strong> on Facebook with screenshot<br>
+        3. <strong>Get your access code</strong> via DM<br>
+        4. Enter the code above ✅
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- LANDING -->
 <div class="page active" id="page-landing">
@@ -154,10 +259,19 @@
     <div class="nav-logo">Resume Fixer</div>
     <div class="nav-sub">by Mary the VA</div>
   </nav>
-  <div class="hero">
-    <div class="eyebrow">For VAs, Freelancers & Job Hunters</div>
-    <h1 class="hero-title">Your resume might be the reason you're <em>not getting callbacks.</em></h1>
-    <p class="hero-sub">You've applied. You've waited. Nothing. No reply, no feedback — just silence. Most of the time, the problem isn't your experience. It's how you're presenting it.</p>
+  <div class="hero hero-visual">
+    <div class="dot-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span>●</span> AI-Powered Resume Fixer · ₱99 lang</div>
+      <div class="eyebrow">For VAs, Freelancers & Job Hunters</div>
+      <h1 class="hero-title">Your resume might be the reason you're <em>not getting callbacks.</em></h1>
+      <p class="hero-sub">You've applied. You've waited. Nothing. No reply, no feedback — just silence. Most of the time, the problem isn't your experience. It's how you're presenting it.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">300+</div><div class="stat-label">applicants per OLJ post</div></div>
+        <div class="stat-box"><div class="stat-num">7s</div><div class="stat-label">recruiters spend per resume</div></div>
+        <div class="stat-box"><div class="stat-num">99%</div><div class="stat-label">Fortune 500 use ATS</div></div>
+      </div>
+    </div>
   </div>
   <div class="mary-sig">
     <div class="avatar">M</div>
@@ -216,6 +330,22 @@
   <button class="btn-cta" onclick="goToTool()"><i class="ti ti-arrow-right"></i> Fix My Resume — ₱99</button>
   <p class="trust-note"><i class="ti ti-lock" style="font-size:12px;vertical-align:-1px"></i> Your resume is only used to generate your results. Nothing is stored.</p>
   <div class="divider"></div>
+  <div class="divider"></div>
+  <div class="section-label" style="margin-bottom:12px">How to get access</div>
+  <div class="payment-box">
+    <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:1.25rem">Mag-message sa amin sa Facebook — automatic na makakatanggap ka ng GCash details. Pagkatapos mag-bayad ng <strong style="color:var(--text)">₱99</strong>, i-screenshot ang confirmation at i-send sa amin. Bibigyan ka namin ng access code agad.</p>
+    <div class="payment-steps">
+      <div class="payment-step"><div class="step-num">1</div><span>Click ang button below para mag-message kay <strong style="color:var(--text)">Mary the VA</strong> sa Facebook</span></div>
+      <div class="payment-step"><div class="step-num">2</div><span>Auto-reply ang page with GCash details — bayad ng <strong style="color:var(--text)">₱99</strong></span></div>
+      <div class="payment-step"><div class="step-num">3</div><span>I-screenshot ang payment confirmation at i-send sa amin</span></div>
+      <div class="payment-step"><div class="step-num">4</div><span>Bibigyan ka ng <strong style="color:var(--text)">access code</strong> — enter mo sa tool at start na!</span></div>
+    </div>
+    <a href="https://m.me/MarytheVAph" target="_blank" class="fb-btn" style="display:inline-flex;width:auto;margin-top:.5rem">
+      <i class="ti ti-brand-messenger"></i> Message us to get started
+    </a>
+    <p style="font-size:11px;color:var(--text3);margin-top:12px">₱99 one-time · GCash only · Access sent within minutes</p>
+  </div>
+  <div class="divider"></div>
   <div class="section-label" style="margin-bottom:12px">Common questions</div>
   <div>
     <div class="faq-item">
@@ -224,7 +354,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How do I pay? <i class="ti ti-chevron-down" style="font-size:14px;flex-shrink:0"></i></div>
-      <div class="faq-a">Via GCash only. DM Mary the VA on Facebook for the GCash number — access is sent right after payment is confirmed.</div>
+      <div class="faq-a">Via GCash only. Scan the QR code above to pay ₱99, screenshot your confirmation, then DM Mary the VA on Facebook. Access link is sent right after.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">Is my resume safe? <i class="ti ti-chevron-down" style="font-size:14px;flex-shrink:0"></i></div>
@@ -291,9 +421,64 @@
     <div id="s-results" style="display:none">
       <div class="tip-box" id="overall-fb" style="margin-bottom:1.5rem"></div>
 
+      <div id="jobs-section" style="display:none;margin-bottom:1.5rem">
+        <div class="section-label" style="margin-bottom:10px">Feedback sa bawat trabaho mo</div>
+        <div id="jobs-container"></div>
+      </div>
+
       <div id="fixes-section" style="display:none;margin-bottom:1.5rem">
         <div class="section-label" style="margin-bottom:12px">Mga kailangan mong ayusin — basahin mo ito</div>
         <div id="fixes-container"></div>
+      </div>
+
+      <div class="ats-guide">
+        <div class="ats-guide-header" onclick="toggleAtsGuide(this)">
+          <h4><i class="ti ti-file-check"></i> 📋 ATS Resume Guide — click to view sample format</h4>
+          <i class="ti ti-chevron-down" style="font-size:14px;color:var(--text3)"></i>
+        </div>
+        <div class="ats-guide-body">
+          <div class="ats-tip">💡 <strong>Ano ang ATS-friendly resume?</strong> Simple formatting, standard headings, walang tables o columns, keyword-optimized. Ganito dapat mag-mukhang resume mo:</div>
+          <div class="ats-sample">MARY ANN DELA CRUZ
+Virtual Assistant | Operations Specialist
+Email: mary@email.com | Phone: 09XX-XXX-XXXX | LinkedIn: linkedin.com/in/mary
+
+─────────────────────────────────────
+PROFESSIONAL SUMMARY
+─────────────────────────────────────
+Results-driven VA with 5+ years supporting remote teams in operations,
+CRM management, and workflow automation. Specialized in GoHighLevel,
+Google Workspace, and Asana. Focused on helping founders save 10+ hours/week.
+
+─────────────────────────────────────
+CORE COMPETENCIES
+─────────────────────────────────────
+• CRM Management (GoHighLevel, HubSpot)
+• Workflow Automation
+• Operations Coordination
+• SOP Documentation
+• Project Management (Asana, ClickUp)
+• Email & Calendar Management
+
+─────────────────────────────────────
+WORK EXPERIENCE
+─────────────────────────────────────
+Operations VA | ABC Agency | 2022 – Present
+• Reduced client onboarding time by 40% through automated workflows
+• Managed CRM database of 500+ contacts with 99% accuracy
+• Created SOPs that cut training time from 2 weeks to 3 days
+
+Admin VA | XYZ Company | 2020 – 2022
+• Handled email management for 3 executives — zero missed deadlines
+• Coordinated 50+ vendor contracts and maintained documentation
+• Streamlined invoice processing, reducing errors by 60%
+
+─────────────────────────────────────
+EDUCATION & TOOLS
+─────────────────────────────────────
+Bachelor of Science in Business Administration
+Tools: GoHighLevel · Google Workspace · Asana · Slack · Notion · Zapier</div>
+          <div class="ats-tip" style="margin-top:10px">✅ <strong>Key rules:</strong> Use standard section headings (EXPERIENCE, EDUCATION, SKILLS). No photos, no graphics, no tables. Use bullet points. Keep fonts simple (Arial, Calibri). Save as .docx or plain PDF.</div>
+        </div>
       </div>
 
       <div class="section-label">Headline</div>
@@ -404,6 +589,36 @@ Any mutual connection or reason for reaching out: [Optional]
 Instructions: Write a 3-5 sentence cold message. Make it feel personal, not copy-paste. Lead with their problem, not my background. End with a low-pressure CTA like asking if they are open to a quick chat. Keep it under 100 words.</div>
           <button class="copy-btn" onclick="copyPrompt('prompt-3', this)"><i class="ti ti-copy"></i> Copy prompt</button>
         </div>
+        <div class="divider"></div>
+        <div class="bonus-header">
+          <div class="section-label" style="margin-bottom:0">Sample ATS Resume</div>
+          <span class="bonus-badge">📄 Reference</span>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem;line-height:1.7">Ganito dapat mag-look ang isang <strong style="color:var(--text)">ATS-friendly resume</strong> — simple formatting, walang tables or columns, standard headings. Copy this structure.</p>
+        <div class="ats-sample">
+          <div class="ats-sample-label">✅ ATS-Optimized Resume Sample</div>
+          <div class="ats-sample-name">JUAN DELA CRUZ</div>
+          <div class="ats-sample-contact">juan.delacruz@email.com | +63 912 345 6789 | LinkedIn: linkedin.com/in/juandelacruz | Philippines</div>
+          <div class="ats-section-head">Professional Summary</div>
+          <div class="ats-line">Results-driven Virtual Assistant with 5+ years of experience supporting U.S.-based clients in operations, CRM management, and workflow automation. Proven track record of reducing administrative bottlenecks and improving team efficiency by up to 40%. Skilled in GoHighLevel, Asana, and Google Workspace.</div>
+          <div class="ats-section-head">Core Competencies</div>
+          <div class="ats-line">Operations Management | CRM Administration | Workflow Automation | SOP Documentation</div>
+          <div class="ats-line">Project Coordination | Client Communication | Recruitment Support | GoHighLevel | Asana</div>
+          <div class="ats-section-head">Work Experience</div>
+          <div class="ats-line" style="font-weight:600;color:var(--text)">Virtual Assistant — ABC Agency (Remote, USA) | Jan 2022 – Present</div>
+          <div class="ats-bullet">Managed CRM database of 500+ leads in GoHighLevel, improving follow-up rate by 35%</div>
+          <div class="ats-bullet">Automated onboarding workflow reducing client setup time from 3 days to 4 hours</div>
+          <div class="ats-bullet">Coordinated team of 3 VAs, ensuring 98% on-time task delivery across 10+ active clients</div>
+          <div class="ats-line" style="font-weight:600;color:var(--text);margin-top:8px">Operations Coordinator — XYZ Company | Mar 2019 – Dec 2021</div>
+          <div class="ats-bullet">Streamlined vendor sourcing process cutting procurement time by 25%</div>
+          <div class="ats-bullet">Created and maintained SOPs for 8 core business processes improving team consistency</div>
+          <div class="ats-bullet">Supported recruitment by screening 50+ applicants monthly and coordinating interviews</div>
+          <div class="ats-section-head">Education</div>
+          <div class="ats-line">Bachelor of Science in Business Administration — University of the Philippines | 2018</div>
+          <div class="ats-section-head">Tools & Software</div>
+          <div class="ats-line">GoHighLevel · Asana · ClickUp · Google Workspace · Slack · Notion · Zoom · Canva</div>
+          <div class="ats-note">⚠️ Bakit ganito ang format? Walang tables, walang columns, walang fancy design — kasi hindi mababasa ng ATS robot yun. Simple, clean, keyword-rich. Ganito dapat ang structure ng resume mo para makapasa sa screening software.</div>
+        </div>
       </div>
 
     </div>
@@ -418,6 +633,23 @@ Instructions: Write a 3-5 sentence cold message. Make it feel personal, not copy
 const GROQ_KEY='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';
 const GROQ_URL='https://api.groq.com/openai/v1/chat/completions';
 
+// PASSWORD
+function checkPassword(){
+  const val=document.getElementById('pw-input').value.trim();
+  const err=document.getElementById('pw-err');
+  if(val==='mary99'){
+    document.getElementById('page-password').style.display='none';
+    document.getElementById('page-landing').classList.remove('active');
+    document.getElementById('page-tool').classList.add('active');
+    err.style.display='none';
+    window.scrollTo(0,0);
+  }else{
+    err.style.display='block';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+
 let resumeText='',currentTab='upload',originalAIOutput={};
 if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
@@ -430,9 +662,15 @@ async function callGemini(prompt){
   return text.replace(/```json|```/g,'').trim();
 }
 
+function toggleAtsGuide(el){
+  const body=el.nextElementSibling;
+  body.classList.toggle('open');
+  const icon=el.querySelector('.ti-chevron-down');
+  if(icon)icon.style.transform=body.classList.contains('open')?'rotate(180deg)':'';
+}
 function toggleFaq(el){el.nextElementSibling.classList.toggle('open')}
-function goToTool(){document.getElementById('page-landing').classList.remove('active');document.getElementById('page-tool').classList.add('active');window.scrollTo(0,0)}
-function goBack(){document.getElementById('page-tool').classList.remove('active');document.getElementById('page-landing').classList.add('active');window.scrollTo(0,0)}
+function goToTool(){document.getElementById('page-landing').classList.remove('active');document.getElementById('page-password').style.display='flex';window.scrollTo(0,0)}
+function goBack(){document.getElementById('page-tool').classList.remove('active');document.getElementById('page-landing').classList.add('active');window.scrollTo(0,0);}
 function backToEdit(){document.getElementById('s-review').style.display='none';document.getElementById('s-results').style.display='block';setStep(3)}
 function switchTab(t){
   currentTab=t;
@@ -492,31 +730,38 @@ async function analyzeResume(){
   const statusEl=document.getElementById('loading-status');
   const tInt=setInterval(()=>{ti=(ti+1)%msgs.length;statusEl.innerHTML=`<span class="spinner"></span> ${msgs[ti]}`},2800);
   const jobCtx=jobTitle?`Target role: "${jobTitle}". Tailor all rewrites to this specific role.`:'No target role — write for a general VA / operations professional.';
-  const prompt=`You are a brutally honest resume coach helping Filipino VAs and job seekers fix their resumes. You speak in Taglish — mix of English and Filipino — so it feels personal, relatable, and easy to understand.
+  const prompt=`You are a brutally honest resume coach helping Filipino VAs and job seekers. You speak in Taglish — mix of English and Filipino — so it feels personal, relatable, and easy to understand.
 
-IMPORTANT: Analyze the ENTIRE resume — ALL job experiences, ALL bullets from every role, headline, summary, competencies, skills sections, everything. Do not focus on just one job. Rewrite bullets from ALL positions.
+CRITICAL: You MUST analyze and give feedback on EVERY SINGLE job experience in the resume — not just the first one or two. Go through the entire work history. Rewrite bullets from ALL roles. If there are 5 jobs, cover all 5. If there are 3, cover all 3.
 
 ${jobCtx}
 
 Resume:
 """
-${text.slice(0,4000)}
+${text.slice(0,5000)}
 """
 
-Return ONLY valid JSON. No markdown, no backticks, no explanation.
+Return ONLY valid JSON. No markdown, no backticks, no explanation outside JSON.
 
-FEEDBACK STYLE — Write everything in Taglish. Sound like a mentor na talagang gusto kang tulungan. Be direct, specific, and relatable. Use this energy:
+FEEDBACK STYLE — Taglish throughout. Sound like a mentor na talagang gusto kang tulungan. Direct, specific, relatable:
 - "Ito yung nakakasakit sa response rate mo..."
 - "Clients will think: mahal, overqualified, corporate"
 - "Ganito dapat ang dating mo sa hiring manager..."
 
 {
-  "overall_feedback": "3-4 sentences sa Taglish. Sabihin ang 2-3 pinakamalaking problema. Start with: Ito yung mga bagay na nakakasakit sa resume mo ngayon — then explain kung bakit.",
+  "overall_feedback": "4-5 sentences sa Taglish. Cover the ENTIRE resume — lahat ng job experiences, hindi lang yung una. Sabihin ang 3 pinakamalaking problema across the whole resume. Start with: Ito yung mga bagay na nakakasakit sa buong resume mo —",
+  "job_feedback": [
+    {
+      "job_title": "exact job title from resume",
+      "company": "company name or blank if none",
+      "feedback": "1-2 Taglish sentences — specific feedback sa bullets at presentation ng role na ito. Ano ang mali at bakit nakakasakit."
+    }
+  ],
   "fixes": [
     {
       "number": 1,
-      "title": "SHORT PUNCHY TITLE IN CAPS — specific sa actual problem na nakita mo",
-      "problem": "Taglish explanation kung ano ang mali at BAKIT nakakapagpahina nito — psychological effect sa client o hiring manager. Be specific sa exact words na nakita mo sa resume.",
+      "title": "PUNCHY FIX TITLE IN CAPS — based on actual problem sa buong resume",
+      "problem": "Taglish — specific problem at psychological effect nito sa client o hiring manager. Name exact words o phrases na nakita mo.",
       "fix": "Exact fix na dapat gawin, may example wording"
     },
     {
@@ -529,20 +774,20 @@ FEEDBACK STYLE — Write everything in Taglish. Sound like a mentor na talagang 
       "number": 3,
       "title": "THIRD FIX TITLE IN CAPS",
       "problem": "Taglish — ano ang mali at bakit",
-      "fix": "Specific fix with example wording — kung walang direct business outcome, idagdag"
+      "fix": "Specific fix with example wording"
     }
   ],
   "headline": {
-    "feedback": "Taglish — ano ang mali sa headline at bakit nakakasakit. Name the specific weak words.",
+    "feedback": "Taglish — ano ang mali sa headline at bakit nakakasakit. Name the exact weak words.",
     "rewrite": "Strong specific rewritten headline para sa target role nila"
   },
   "summary": {
     "feedback": "Taglish — task-based ba? Too long? Walang outcomes? Name specific phrases na nakita mo.",
-    "rewrite": "3-4 sentence punchy summary na naka-focus sa outcomes at nagpo-position sa kanila as a solution"
+    "rewrite": "3-4 sentence punchy summary na naka-focus sa outcomes, nagpo-position sa kanila as a solution"
   },
   "bullets": {
-    "feedback": "Taglish — ano ang pattern ng weakness sa LAHAT ng bullets mula sa LAHAT ng job experiences. Vague verbs? Walang metrics? Too duty-based? Give specific examples.",
-    "rewrites": ["rewritten bullet from job 1","rewritten bullet from job 1","rewritten bullet from job 2","rewritten bullet from job 2","rewritten bullet from job 3","rewritten bullet from job 3","additional bullet","additional bullet"]
+    "feedback": "Taglish — pattern ng weakness sa LAHAT ng bullets mula sa LAHAT ng jobs. Give specific examples ng mga weak lines.",
+    "rewrites": ["rewritten bullet job 1","rewritten bullet job 1","rewritten bullet job 2","rewritten bullet job 2","rewritten bullet job 3","rewritten bullet job 3","rewritten bullet job 4","rewritten bullet job 4"]
   }
 }
 
@@ -568,6 +813,18 @@ JSON only. Nothing else.`;
 
 function populateResults(r){
   document.getElementById('overall-fb').innerHTML=`<strong>🎯 Overall na feedback:</strong> ${r.overall_feedback||''}`;
+
+  // Render per-job feedback
+  const jobsEl=document.getElementById('jobs-container');
+  if(jobsEl && r.job_feedback?.length){
+    jobsEl.innerHTML='';
+    r.job_feedback.forEach(j=>{
+      const card=document.createElement('div');card.className='job-card';
+      card.innerHTML=`<div class="job-card-title">${j.job_title||'Role'}</div><div class="job-card-company">${j.company||''}</div><div class="job-card-feedback">${j.feedback||''}</div>`;
+      jobsEl.appendChild(card);
+    });
+    document.getElementById('jobs-section').style.display='block';
+  }
 
   // Render important fixes
   const fixesEl=document.getElementById('fixes-container');
@@ -708,8 +965,9 @@ function resetTool(){
   document.getElementById('ed-headline').value='';
   document.getElementById('ed-summary').value='';
   document.getElementById('bullets-editor').innerHTML='';
-  ['hcard','scard','bcard','fixes-section'].forEach(id=>document.getElementById(id).style.display='none');
+  ['hcard','scard','bcard','fixes-section','jobs-section'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('fixes-container').innerHTML='';
+  document.getElementById('jobs-container').innerHTML='';
   ['s-results','s-review','s-review-loading'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('s-upload').style.display='block';
   const btn=document.getElementById('analyze-btn');
