@@ -292,7 +292,7 @@
       <div class="tip-box" id="overall-fb" style="margin-bottom:1.5rem"></div>
 
       <div id="fixes-section" style="display:none;margin-bottom:1.5rem">
-        <div class="section-label" style="margin-bottom:12px">Important fixes for your resume</div>
+        <div class="section-label" style="margin-bottom:12px">Mga kailangan mong ayusin — basahin mo ito</div>
         <div id="fixes-container"></div>
       </div>
 
@@ -492,7 +492,9 @@ async function analyzeResume(){
   const statusEl=document.getElementById('loading-status');
   const tInt=setInterval(()=>{ti=(ti+1)%msgs.length;statusEl.innerHTML=`<span class="spinner"></span> ${msgs[ti]}`},2800);
   const jobCtx=jobTitle?`Target role: "${jobTitle}". Tailor all rewrites to this specific role.`:'No target role — write for a general VA / operations professional.';
-  const prompt=`You are a brutally honest resume coach helping Filipino VAs and job seekers. Analyze the ENTIRE resume — headline, summary, bullets, competencies, skills, every section visible. Do not skip anything.
+  const prompt=`You are a brutally honest resume coach helping Filipino VAs and job seekers fix their resumes. You speak in Taglish — mix of English and Filipino — so it feels personal, relatable, and easy to understand.
+
+IMPORTANT: Analyze the ENTIRE resume — ALL job experiences, ALL bullets from every role, headline, summary, competencies, skills sections, everything. Do not focus on just one job. Rewrite bullets from ALL positions.
 
 ${jobCtx}
 
@@ -501,43 +503,46 @@ Resume:
 ${text.slice(0,4000)}
 """
 
-Return ONLY valid JSON. No markdown, no backticks, no explanation outside the JSON.
+Return ONLY valid JSON. No markdown, no backticks, no explanation.
 
-Write feedback like a straight-talking mentor: name SPECIFIC words or phrases that are weak, explain WHY it hurts them psychologically with clients or hiring managers, give a clear fix. Use punchy caps titles for fixes.
+FEEDBACK STYLE — Write everything in Taglish. Sound like a mentor na talagang gusto kang tulungan. Be direct, specific, and relatable. Use this energy:
+- "Ito yung nakakasakit sa response rate mo..."
+- "Clients will think: mahal, overqualified, corporate"
+- "Ganito dapat ang dating mo sa hiring manager..."
 
 {
-  "overall_feedback": "3-4 sentences. Name the 2-3 biggest problems. Start with: Here is what is hurting you right now — then explain the psychological impact on the hiring manager or client.",
+  "overall_feedback": "3-4 sentences sa Taglish. Sabihin ang 2-3 pinakamalaking problema. Start with: Ito yung mga bagay na nakakasakit sa resume mo ngayon — then explain kung bakit.",
   "fixes": [
     {
       "number": 1,
-      "title": "REMOVE THE YEARS OF EXPERIENCE",
-      "problem": "Saying 17 or 18 years makes clients think: expensive, overqualified, corporate, senior-senior. Especially on OLJ. It triggers budget anxiety before they even read your skills.",
-      "fix": "Remove the years from your headline and summary. Let your results speak instead. Replace with your specialization and the outcome you deliver."
+      "title": "SHORT PUNCHY TITLE IN CAPS — specific sa actual problem na nakita mo",
+      "problem": "Taglish explanation kung ano ang mali at BAKIT nakakapagpahina nito — psychological effect sa client o hiring manager. Be specific sa exact words na nakita mo sa resume.",
+      "fix": "Exact fix na dapat gawin, may example wording"
     },
     {
       "number": 2,
-      "title": "IDENTIFY REAL FIX 2 FROM RESUME",
-      "problem": "Describe the actual problem found in this specific resume and why it hurts",
-      "fix": "Give the specific fix with example wording from their actual content"
+      "title": "SECOND FIX TITLE IN CAPS",
+      "problem": "Taglish — ano ang mali at bakit nakakasakit sa perception ng reader",
+      "fix": "Specific fix with example"
     },
     {
       "number": 3,
-      "title": "IDENTIFY REAL FIX 3 FROM RESUME",
-      "problem": "Describe the actual problem found in this specific resume and why it hurts",
-      "fix": "Give the specific fix with example wording — add a direct business outcome line if missing"
+      "title": "THIRD FIX TITLE IN CAPS",
+      "problem": "Taglish — ano ang mali at bakit",
+      "fix": "Specific fix with example wording — kung walang direct business outcome, idagdag"
     }
   ],
   "headline": {
-    "feedback": "What is wrong with this headline and why it hurts. Name the specific weak words.",
-    "rewrite": "Strong specific rewritten headline for their target role"
+    "feedback": "Taglish — ano ang mali sa headline at bakit nakakasakit. Name the specific weak words.",
+    "rewrite": "Strong specific rewritten headline para sa target role nila"
   },
   "summary": {
-    "feedback": "What is weak — task-based? Too long? No outcomes? Name specific phrases that are hurting them.",
-    "rewrite": "3-4 sentence punchy summary leading with outcomes, positioning them as a solution not just a candidate"
+    "feedback": "Taglish — task-based ba? Too long? Walang outcomes? Name specific phrases na nakita mo.",
+    "rewrite": "3-4 sentence punchy summary na naka-focus sa outcomes at nagpo-position sa kanila as a solution"
   },
   "bullets": {
-    "feedback": "What pattern of weakness — vague verbs? No metrics? Too duty-based? Name specific examples from their actual bullets.",
-    "rewrites": ["bullet 1","bullet 2","bullet 3","bullet 4","bullet 5","bullet 6"]
+    "feedback": "Taglish — ano ang pattern ng weakness sa LAHAT ng bullets mula sa LAHAT ng job experiences. Vague verbs? Walang metrics? Too duty-based? Give specific examples.",
+    "rewrites": ["rewritten bullet from job 1","rewritten bullet from job 1","rewritten bullet from job 2","rewritten bullet from job 2","rewritten bullet from job 3","rewritten bullet from job 3","additional bullet","additional bullet"]
   }
 }
 
@@ -562,7 +567,7 @@ JSON only. Nothing else.`;
 }
 
 function populateResults(r){
-  document.getElementById('overall-fb').innerHTML=`<strong>Overall:</strong> ${r.overall_feedback||''}`;
+  document.getElementById('overall-fb').innerHTML=`<strong>🎯 Overall na feedback:</strong> ${r.overall_feedback||''}`;
 
   // Render important fixes
   const fixesEl=document.getElementById('fixes-container');
@@ -570,7 +575,7 @@ function populateResults(r){
     fixesEl.innerHTML='';
     r.fixes.forEach(f=>{
       const card=document.createElement('div');card.className='fix-card';
-      card.innerHTML=`<div class="fix-number">FIX #${f.number}</div><div class="fix-title">${f.title}</div><div class="fix-problem">${f.problem}</div><div class="fix-solution"><strong>Fix:</strong> ${f.fix}</div>`;
+      card.innerHTML=`<div class="fix-number">⚠️ FIX #${f.number}</div><div class="fix-title">${f.title}</div><div class="fix-problem">${f.problem}</div><div class="fix-solution">✅ <strong>Gawin ito:</strong> ${f.fix}</div>`;
       fixesEl.appendChild(card);
     });
     document.getElementById('fixes-section').style.display='block';
