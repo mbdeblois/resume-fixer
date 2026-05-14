@@ -784,77 +784,74 @@ async function analyzeResume(){
   document.getElementById('s-upload').style.display='none';
   document.getElementById('s-loading').style.display='block';
   setStep(2);
-  const msgs=['Reading your resume...','Spotting what needs fixing...','Rewriting the headline...','Polishing the summary...','Strengthening your bullets...'];
+  const msgs=['Reading your resume...','Spotting what needs fixing...','Rewriting sections...','Polishing the output...','Almost done...'];
   let ti=0;
   const statusEl=document.getElementById('loading-status');
   const tInt=setInterval(()=>{ti=(ti+1)%msgs.length;statusEl.innerHTML=`<span class="spinner"></span> ${msgs[ti]}`},2800);
-  const jobCtx=jobTitle?`Target role: "${jobTitle}". Tailor all rewrites to this specific role.`:'No target role — write for a general VA / operations professional.';
-  const prompt=`You are a brutally honest resume coach helping Filipino VAs and job seekers. You speak in Taglish — mix of English and Filipino — so it feels personal, relatable, and easy to understand.
+  const jobCtx=jobTitle?`Target role: "${jobTitle}". Tailor everything to this role.`:'No target role — write for a general VA / operations professional.';
+  const resumeText_short=text.slice(0,4000);
 
-CRITICAL: You MUST analyze and give feedback on EVERY SINGLE job experience in the resume — not just the first one or two. Go through the entire work history. Rewrite bullets from ALL roles. If there are 5 jobs, cover all 5. If there are 3, cover all 3.
+  // CALL 1 — Feedback, fixes, overall (smaller JSON)
+  const prompt1=`You are a brutally honest resume coach for Filipino VAs. Speak in Taglish. Analyze this resume and return ONLY valid JSON — no markdown, no backticks.
 
 ${jobCtx}
 
 Resume:
 """
-${text.slice(0,5000)}
+${resumeText_short}
 """
 
-Return ONLY valid JSON. No markdown, no backticks, no explanation outside JSON.
-
-FEEDBACK STYLE — Taglish throughout. Sound like a mentor na talagang gusto kang tulungan. Direct, specific, relatable:
-- "Ito yung nakakasakit sa response rate mo..."
-- "Clients will think: mahal, overqualified, corporate"
-- "Ganito dapat ang dating mo sa hiring manager..."
-
+Return ONLY this JSON:
 {
-  "overall_feedback": "4-5 sentences sa Taglish. Cover the ENTIRE resume — lahat ng job experiences, hindi lang yung una. Sabihin ang 3 pinakamalaking problema across the whole resume. Start with: Ito yung mga bagay na nakakasakit sa buong resume mo —",
-  "job_feedback": [
-    {
-      "job_title": "exact job title from resume",
-      "company": "company name or blank if none",
-      "feedback": "1-2 Taglish sentences — specific feedback sa bullets at presentation ng role na ito. Ano ang mali at bakit nakakasakit."
-    }
-  ],
+  "overall_feedback": "3-4 Taglish sentences. Cover the whole resume. Start with: Ito yung mga nakakasakit sa resume mo —",
   "fixes": [
-    {
-      "number": 1,
-      "title": "PUNCHY FIX TITLE IN CAPS — based on actual problem sa buong resume",
-      "problem": "Taglish — specific problem at psychological effect nito sa client o hiring manager. Name exact words o phrases na nakita mo.",
-      "fix": "Exact fix na dapat gawin, may example wording"
-    },
-    {
-      "number": 2,
-      "title": "SECOND FIX TITLE IN CAPS",
-      "problem": "Taglish — ano ang mali at bakit nakakasakit sa perception ng reader",
-      "fix": "Specific fix with example"
-    },
-    {
-      "number": 3,
-      "title": "THIRD FIX TITLE IN CAPS",
-      "problem": "Taglish — ano ang mali at bakit",
-      "fix": "Specific fix with example wording"
-    }
+    {"number":1,"title":"FIX TITLE IN CAPS","problem":"Taglish — specific problem at psychological effect nito. Name exact words.","fix":"Exact fix with example wording"},
+    {"number":2,"title":"FIX TITLE IN CAPS","problem":"Taglish — ano ang mali at bakit nakakasakit","fix":"Specific fix with example"},
+    {"number":3,"title":"FIX TITLE IN CAPS","problem":"Taglish — ano ang mali at bakit","fix":"Specific fix with example"}
   ],
-  "headline": {
-    "feedback": "Taglish — ano ang mali sa headline at bakit nakakasakit. Name the exact weak words.",
-    "rewrite": "Strong specific rewritten headline para sa target role nila"
-  },
-  "summary": {
-    "feedback": "Taglish — task-based ba? Too long? Walang outcomes? Name specific phrases na nakita mo.",
-    "rewrite": "3-4 sentence punchy summary na naka-focus sa outcomes, nagpo-position sa kanila as a solution"
-  },
-  "bullets": {
-    "feedback": "Taglish — pattern ng weakness sa LAHAT ng bullets mula sa LAHAT ng jobs. Give specific examples ng mga weak lines.",
-    "rewrites": ["rewritten bullet job 1","rewritten bullet job 1","rewritten bullet job 2","rewritten bullet job 2","rewritten bullet job 3","rewritten bullet job 3","rewritten bullet job 4","rewritten bullet job 4"]
-  }
+  "headline_feedback": "Taglish — ano ang mali sa headline. Name exact weak words.",
+  "headline_rewrite": "Strong rewritten headline for their target role",
+  "summary_feedback": "Taglish — task-based? Walang outcomes? Name specific phrases.",
+  "summary_rewrite": "3-4 sentence punchy outcome-focused summary"
 }
 
-JSON only. Nothing else.`;
+JSON only.`;
+
+  // CALL 2 — Bullet rewrites only (separate call)
+  const prompt2=`You are an expert resume writer. Rewrite bullets from ALL job experiences in this resume. Return ONLY valid JSON — no markdown, no backticks.
+
+${jobCtx}
+
+Resume:
+"""
+${resumeText_short}
+"""
+
+Return ONLY this JSON:
+{
+  "bullets_feedback": "1-2 Taglish sentences — pattern ng weakness sa lahat ng bullets. Name specific weak examples.",
+  "rewrites": ["strong bullet 1","strong bullet 2","strong bullet 3","strong bullet 4","strong bullet 5","strong bullet 6"]
+}
+
+Rules: Start each bullet with a strong action verb. Include metrics where possible. Cover different jobs. JSON only.`;
+
   try{
-    const raw=await callGemini(prompt);
     clearInterval(tInt);
-    const result=JSON.parse(raw);
+    statusEl.innerHTML='<span class="spinner"></span> Analyzing feedback...';
+
+    const [raw1, raw2] = await Promise.all([callGemini(prompt1), callGemini(prompt2)]);
+    const r1 = JSON.parse(raw1);
+    const r2 = JSON.parse(raw2);
+
+    // Merge results
+    const result = {
+      overall_feedback: r1.overall_feedback||'',
+      fixes: r1.fixes||[],
+      headline: {feedback: r1.headline_feedback||'', rewrite: r1.headline_rewrite||''},
+      summary: {feedback: r1.summary_feedback||'', rewrite: r1.summary_rewrite||''},
+      bullets: {feedback: r2.bullets_feedback||'', rewrites: r2.rewrites||[]}
+    };
+
     originalAIOutput=result;
     populateResults(result);
     document.getElementById('s-loading').style.display='none';
